@@ -54,6 +54,6 @@ const apartmentSchema= new mongoose.Schema({
 })
 
 
-const Apartment= mongoose.model('Apartment', apartmentSchema)
+const Apartment = mongoose.model('Apartment', apartmentSchema)
 
-module.exports= Apartment;
+module.exports = Apartment;
