@@ -10,6 +10,7 @@ router.route('/')
 
 router.route('/:id')
     .patch(apartmentController.updateApartment)
+    .delete(apartmentController.deleteApartment)
 
 
 

@@ -1,5 +1,6 @@
 const mongoose= require('mongoose')
 
+
 const apartmentSchema= new mongoose.Schema({
     name: {
         type: String,
@@ -17,22 +18,10 @@ const apartmentSchema= new mongoose.Schema({
     },
 
     roomOccupants: Number, 
-    location: [
-        {
-            type:{
-                type: String,
-                default:'Point',
-                enum: ['Point']
-            },
-            coordinates: {
-                type: Number,
-                unique:[true, 'This Place belongs to someone else']
-            }, 
-            address: String, 
-            description: String, 
-
-        }
-    ],
+    coordinates: {
+        type: [Number],
+        required: [true, 'what is the "coordinates" of this apartment???']
+    },
 
     owner:{
         type: String, 
@@ -50,7 +39,18 @@ const apartmentSchema= new mongoose.Schema({
     secretApartment: {
         type: Boolean,
         default: false
-    }
+    },
+    price: {
+        type: Number,
+        required:[true, 'what is the "price" of your apartment']
+    }, 
+    discountPrice: Number,
+    imageCover: {
+        type: String,
+        required: [true, 'your apartment must have an image cover']
+    },
+    images: [String],
+
 })
 
 
