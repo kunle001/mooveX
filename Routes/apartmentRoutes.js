@@ -9,6 +9,7 @@ router.route('/')
     .post(apartmentController.createApartment)
 
 router.route('/:id')
+    .get(apartmentController.getOneApartment)
     .patch(apartmentController.updateApartment)
     .delete(apartmentController.deleteApartment)
 

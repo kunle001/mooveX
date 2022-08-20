@@ -79,6 +79,25 @@ exports.getAllApartments= async (req, res, next)=>{
 
 };
 
+exports.getOneApartment= async(req, res, next)=> {
+    try{
+        const apartment= await Apartment.findById(req.params.id)
+
+        res.status(200).json({
+            message: 'success',
+            data: apartment
+        })
+
+    }catch(err){
+        res.status(404).json({
+            error: err.message
+        })
+    }
+
+
+
+}
+
 exports.createApartment = async (req, res, next) => {
     try {
         const apartment= await Apartment.create(req.body)
@@ -104,12 +123,13 @@ exports.createApartment = async (req, res, next) => {
 exports.updateApartment = async (req, res, next)=>{
     
     try{ 
-        const apartment= await Apartment.findByIdAndUpdate(req.params.id, req.params.body, {
+        const apartment= await Apartment.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
-            runValidators:true
-        })
+            runValidators: true
+          });
+      
         res.status(200).json({
-            message: 'Sucess', 
+            message: 'sucess', 
             data: apartment
     })
     }catch(err){

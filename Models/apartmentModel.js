@@ -51,6 +51,15 @@ const apartmentSchema= new mongoose.Schema({
     },
     images: [String],
 
+    ratingsAverage: {
+        type: Number,
+        default: 4.5
+    },
+    ratingsQuantity: {
+        type: Number,
+        default: 1
+    }
+
 })
 
 
