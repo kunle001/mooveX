@@ -1,4 +1,5 @@
 const mongoose= require('mongoose')
+const slugify = require('slugify')
 
 
 const apartmentSchema= new mongoose.Schema({
@@ -22,11 +23,6 @@ const apartmentSchema= new mongoose.Schema({
         type: [Number],
         required: [true, 'what is the "coordinates" of this apartment???']
     },
-
-    owner:{
-        type: String, 
-        required: [true, 'Apartment must belong to an owner']
-    }, 
     summary:{
         type: String, 
         required: [true, 'Please add ur description'], 
@@ -58,9 +54,52 @@ const apartmentSchema= new mongoose.Schema({
     ratingsQuantity: {
         type: Number,
         default: 1
-    }
+    },
+    agents:[{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        // validate: {
+        //     validator: function(el){
+        //         return el.role === 'agent'
+        //     }
+        // }
+    }],
 
+    owners:[{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        // validate: {
+        //     validator: function(el){
+        //         return el.role==='owner'
+        //     }
+        // }
+    }],
+},
+{
+    toJSON: {virtuals: true}, 
+    toobject: {virtuals: true}
 })
+
+apartmentSchema.pre('save', function(next) {
+    this.slug = slugify(this.name, { lower: true });
+    next();
+  });
+
+apartmentSchema.pre(/^findOne/, function(next){
+    this.populate({
+        path: 'owners',
+        select: 'name email imageCover -_id '
+    });
+    
+    this.populate({
+        path: 'agents',
+        select: 'name email imageCover -_id'
+    })
+
+    next();
+});
+
+
 
 
 const Apartment = mongoose.model('Apartment', apartmentSchema)

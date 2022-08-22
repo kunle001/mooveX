@@ -1,6 +1,7 @@
 const express= require('express')
 const morgan= require('morgan')
 const apartmentRouter= require('./Routes/apartmentRoutes')
+const userRouter= require('./Routes/userRoutes')
 const appError= require('./utils/appError')
 
 
@@ -24,6 +25,7 @@ app.use((req, res, next)=>{
 //Routes
 
 app.use('/api/v1/apartments', apartmentRouter);
+app.use('/api/v1/users', userRouter )
 
 // app.all('*', (req, res, next) => {
 //     next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));

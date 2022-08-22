@@ -1,59 +1,6 @@
 const Apartment= require('../Models/apartmentModel')
+const APIFeatures = require('../utils/apiFeatures')
 
-class APIFeatures {
-    constructor(query, queryString){
-        this.query= query;
-        this.queryString= queryString;
-    }
-
-    filter(){
-        const queryObj = {...this.queryString};
-        const excludedFields= ['page', 'sort', 'fields', 'limit']
-        excludedFields.forEach(el=> delete queryObj[el]);
-
-        //Advanced Filtering
-        let queryStr= JSON.stringify(queryObj);
-        queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}` )
-
-        this.query = this.query.find(JSON.parse(queryStr))
-
-        return this
-    };
-
-    sort(){
-        if (this.queryString.sort){
-            const sortBy = this.queryString.sort.split(',').join(' ');
-            this.query= this.query.sort(sortBy);
-
-        }else{
-            this.query= this.query.sort('-years')
-        }
-        return this
-    };
-
-    limitFields(){
-        if(this.queryString.fields){
-            const fields= this.queryString.fields.split(',').join(' ');
-            this.query= this.query.select(fields)
-        }else{
-            this.query.select('-__v')
-        }
-
-        return this
-    };
-
-    paginate(){
-        const page= this.queryString.page *1 || 1;
-        const limit= this.queryString.limit * 1 || 10;
-        const skip= (page-1) * limit 
-
-        
-        this.query = this.query.skip(skip).limit(limit);
-
-        return this;
-    }
-
-}
 
 exports.getAllApartments= async (req, res, next)=>{
     try{
@@ -68,8 +15,11 @@ exports.getAllApartments= async (req, res, next)=>{
 
         const apartments= await features.query
 
+
         res.status(200).json({
+
             status: 'success',
+            results: apartments.length,
             data: apartments
         });
     }catch(err){res.status(404).json({
@@ -82,6 +32,7 @@ exports.getAllApartments= async (req, res, next)=>{
 exports.getOneApartment= async(req, res, next)=> {
     try{
         const apartment= await Apartment.findById(req.params.id)
+
 
         res.status(200).json({
             message: 'success',
@@ -129,9 +80,10 @@ exports.updateApartment = async (req, res, next)=>{
           });
       
         res.status(200).json({
-            message: 'sucess', 
+            message: 'success', 
             data: apartment
     })
+
     }catch(err){
         res.status({
             message: 'Error',
