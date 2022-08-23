@@ -1,17 +1,25 @@
 const mongoose = require('mongoose');
 const slugify= require('slugify')
 const bcrypt= require('bcrypt')
+const crypto= require('crypto')
+
 
 userSchema= new mongoose.Schema({
-    name:{
+    firstName:{
         type: String,
         required:[true, 'provide a name'],
 
     },
+    lastName:{
+        type: String,
+        required: [true, 'what is your "lastName"']
+
+    },
+
     password: {
         type: String,
         minlength: 8,
-        select: false, //dont show this on the api
+        select: false,
         required:[true, 'input your password']
     }, 
     passwordConfirm: {
@@ -40,11 +48,11 @@ userSchema= new mongoose.Schema({
         default: true
     },
 
-    about: String,
+    aboutMe: String,
     slug: String, 
     role: {
         type: String, 
-        enum: ['user', 'agent', 'owner'] ,
+        enum: ['user', 'agent', 'owner', 'admin'],
         default: 'user'
     },
     experience:{
@@ -55,13 +63,19 @@ userSchema= new mongoose.Schema({
             }
         }
     }, 
+    passwordChangedAt:{
+        type: Date,
+        select: false
+    },
+    passwordResetToken: {type:String, select: false},
+    passwordResetExpires: {type:Date, select:false}
 
 })
 
-userSchema.pre('save', function(next) {
-    this.slug = slugify(this.name, { lower: true });
-    next();
-  });
+// userSchema.pre('save', function(next) {
+//     this.slug = slugify(this.name, { lower: true });
+//     next();
+//   });
 
 userSchema.pre('save', async function(next){
 
@@ -80,9 +94,27 @@ userSchema.pre(/^find/, function(next){
 
 });
 
+userSchema.methods.createPasswordResetToken = function() {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+  
+    this.passwordResetToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+  
+    // console.log({ resetToken }, this.passwordResetToken);
+  
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+  
+    return resetToken;
+  };
 
 
 
 const User = mongoose.model('User', userSchema);
 
+
 module.exports = User;
+
+
+

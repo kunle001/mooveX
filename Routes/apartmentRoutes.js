@@ -3,6 +3,8 @@ const apartmentController = require('../Controllers/apartmentController');
 
 const router= express.Router();
 
+// router.use('/:tourId')
+
 
 router.route('/')
     .get(apartmentController.getAllApartments)

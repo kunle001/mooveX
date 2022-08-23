@@ -1,16 +1,19 @@
 const { findByIdAndDelete } = require('../Models/apartmentModel');
 const User= require('../Models/userModel')
 const APIFeatures= require('../utils/apiFeatures')
+const Email= require('../utils/email')
 
 exports.signUp = async (req, res, next)=>{
     try{
         const user= await User.create(req.body);
-
+        const url= '127.0.0.1:3000/users'
+        await new Email(user, url).sendWelcome()
         res.status(201).json({
             message: 'success',
-            welcome: `You are welcome, Thanks for signing up ${req.body.name}`,
+            welcome: `You are welcome, Thanks for signing up ${req.body.firstName}`,
             data: user
         })
+
     }catch(err){
         res.status(400).json({
             error: err.message

@@ -2,6 +2,7 @@ const mongoose= require('mongoose')
 const slugify = require('slugify')
 
 
+
 const apartmentSchema= new mongoose.Schema({
     name: {
         type: String,
@@ -16,6 +17,22 @@ const apartmentSchema= new mongoose.Schema({
     roomspaces:{
         type: Number, 
         required: [true, 'please specify the number of rooms available'],
+    },
+    apartmentType: {
+        type: String,
+        enum: ['student', 'open', 'gender specific', 'non-student'],
+        default: 'open'
+
+    },
+
+    gender: {
+        type: String,
+        enum: ['Male', 'Female'],
+        validate:{
+            validator: function(){
+                return this.apartmentType=== 'gender specific'
+            }
+        }
     },
 
     roomOccupants: Number, 
@@ -58,21 +75,11 @@ const apartmentSchema= new mongoose.Schema({
     agents:[{
         type: mongoose.Schema.ObjectId,
         ref: 'User',
-        // validate: {
-        //     validator: function(el){
-        //         return el.role === 'agent'
-        //     }
-        // }
     }],
 
     owners:[{
         type: mongoose.Schema.ObjectId,
-        ref: 'User',
-        // validate: {
-        //     validator: function(el){
-        //         return el.role==='owner'
-        //     }
-        // }
+        ref: 'User'
     }],
 },
 {
