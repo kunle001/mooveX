@@ -1,5 +1,6 @@
 const crypto= require('crypto')
 const jwt= require('jsonwebtoken')
+const { promisify } = require('util')
 const User= require('../Models/userModel')
 const Email= require('../utils/email')
 
@@ -98,6 +99,49 @@ exports.forgotPassword= async (req, res, next)=>{
 
 }
 
+exports.checkIfLoggedin= async (req, res, next)=>{
+    // console.log(req.cookie)
+    if(req.cookies){
+        try{
+            // verify if token is real
+            const decoded= await promisify(jwt.verify)(
+                req.cookies.secretoken,
+                process.env.JWT_SECRET
+            );
+
+            // check if user still exists
+            const currentUser= await User.findById(decoded.id);
+
+            if(!currentUser){
+                res.status(400).json({
+                    message: 'this user doesnot exist'
+                });
+            };
+
+            //check if user changed password after the token was issued
+
+            if(currentUser.changedPasswordAfter(decoded.iat)){
+                res.status(404).json({
+                    message: 'password has been changed, please login again'
+                })
+            }
+
+            //if all these are coditions are met then there is a logged in user
+
+            res.locals.user= currentUser
+            return next();
+
+        }catch(err){
+            res.status(400).json({
+                message: err.message
+            })
+        }
+    }
+    res.status(400).json({
+        message: "user is not logged in"
+    })
+}
+
 exports.resetPassword= async (req, res, next)=>{
 
     const hashedToken= crypto.createHash('sha256').update(req.params.token).digest('hex')
@@ -128,3 +172,19 @@ exports.resetPassword= async (req, res, next)=>{
 
 };
 
+exports.Restrict = (...roles) => {
+
+    return (req, res, next) => {
+        // const user= User.findById(req.params)
+        const role= res.locals.user.role
+        // console.log(res.locals.user.role)
+      // roles ['admin', 'lead-guide']. role='user'
+      if (!roles.includes(role)) {
+        res.status(403).send({
+            message: `You are a/an ${role} this page is Highly restricted`
+        })
+      }
+  
+      next();
+    };
+  };

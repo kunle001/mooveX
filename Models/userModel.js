@@ -94,6 +94,14 @@ userSchema.pre(/^find/, function(next){
 
 });
 
+userSchema.methods.changedPasswordAfter= function(jwtTimeStamp){
+    if(this.passwordChangedAt){
+        const changedPasswordAt= parseInt(this.passwordChangedAt.getTime()/1000, 10)
+
+        return jwtTimeStamp< changedPasswordAt
+    }
+};
+
 userSchema.methods.createPasswordResetToken = function() {
     const resetToken = crypto.randomBytes(32).toString('hex');
   
