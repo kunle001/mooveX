@@ -1,10 +1,18 @@
 const cookieParser = require('cookie-parser')
 const express= require('express')
 const morgan= require('morgan')
+
+//Roters
 const apartmentRouter= require('./Routes/apartmentRoutes')
 const userRouter= require('./Routes/userRoutes')
-const appError= require('./utils/appError')
+const reviewRouter= require('./Routes/reviewRoutes')
+const bookingRouter= require('./Routes/bookingRoute')
 
+
+
+//ERror Handler
+const AppError= require('./utils/appError')
+const globalError= require('./Controllers/errorController')
 
 
 // start App
@@ -30,9 +38,16 @@ app.use((req, res, next)=>{
 
 app.use('/api/v1/apartments', apartmentRouter);
 app.use('/api/v1/users', userRouter )
+app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
-// app.all('*', (req, res, next) => {
-//     next(new appError(`Can't find ${req.originalUrl} on this server!`, 404));
-//   });
-  
+app.all('*', (req, res, next)=>{
+    next(new AppError(`Page ${req.originalUrl} is not found`, 404));
+
+});
+
+app.use(globalError);
+   
+
+
 module.exports= app;

@@ -9,13 +9,13 @@ class APIFeatures {
       const excludedFields= ['page', 'sort', 'fields', 'limit']
       excludedFields.forEach(el=> delete queryObj[el]);
 
-      //Advanced Filtering
-      let queryStr= JSON.stringify(queryObj);
-      queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}` )
+    // 1B) Advanced filtering
+      let queryStr = JSON.stringify(queryObj);
+      queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
 
-      this.query = this.query.find(JSON.parse(queryStr))
+      this.query = this.query.find(JSON.parse(queryStr));
 
-      return this
+    return this;
   };
 
   sort(){

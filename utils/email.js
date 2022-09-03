@@ -50,4 +50,8 @@ module.exports = class Email {
 
     }
 
+    async sendActivate(){
+        await this.send('Your Account has been Activated')
+    }
+
 }

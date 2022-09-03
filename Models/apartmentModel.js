@@ -34,12 +34,18 @@ const apartmentSchema= new mongoose.Schema({
             }
         }
     },
-
-    roomOccupants: Number, 
-    coordinates: {
-        type: [Number],
-        required: [true, 'what is the "coordinates" of this apartment???']
+    location:{
+        type:{
+            type: String,
+            default: "Point",
+            enum: ["Point"]
+        },
+        coordinates: [Number],
+        address: String,
+        description: String
     },
+
+    roomOccupants: Number,
     summary:{
         type: String, 
         required: [true, 'Please add ur description'], 
@@ -66,11 +72,12 @@ const apartmentSchema= new mongoose.Schema({
 
     ratingsAverage: {
         type: Number,
-        default: 4.5
+        default: 0,
+        set: val => Math.round(val*10)/10
     },
     ratingsQuantity: {
         type: Number,
-        default: 1
+        default: 0
     },
     agents:[{
         type: mongoose.Schema.ObjectId,
@@ -82,9 +89,15 @@ const apartmentSchema= new mongoose.Schema({
         ref: 'User'
     }],
 },
-{
-    toJSON: {virtuals: true}, 
-    toobject: {virtuals: true}
+{ toJSON: { virtuals: true }, toObject: { virtuals: true }});
+
+apartmentSchema.index({price:1, ratingsAverage:-1, roomOccupants:1})
+apartmentSchema.index({location: '2dsphere'})
+
+apartmentSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'apartment',
+    localField: '_id'
 })
 
 apartmentSchema.pre('save', function(next) {
@@ -105,6 +118,7 @@ apartmentSchema.pre(/^findOne/, function(next){
 
     next();
 });
+
 
 
 
