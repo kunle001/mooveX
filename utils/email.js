@@ -1,4 +1,6 @@
 const nodemailer= require('nodemailer')
+const htmlToText= require('html-to-text')
+const pug= require('pug')
 
 module.exports = class Email {
     constructor(user, url){
@@ -9,8 +11,8 @@ module.exports = class Email {
     }
 
     newTransport(){
-        if (process.env.NODE === 'production'){
-
+        if (process.env.NODE_ENV === 'production'){
+            return 1;
         }
 
         return nodemailer.createTransport({
@@ -23,19 +25,27 @@ module.exports = class Email {
         });
     }
 
-    async send(subject){
+    async send(template, subject){
         //Define email options
-
+        //1) Render Html based on pug template
+        const html= pug.renderFile(`${__dirname}\\..\\views\\emails\\${template}.pug`, {
+            firstName: this.firstName, 
+            url: this.url, 
+            subject
+        })
         const mailOptions= {
             form: this.from,
             to:this.to,
-            subject
+            subject,
+            html,
+            text: htmlToText.fromString(html)
         };
+        //2) create transport 
         await this.newTransport().sendMail(mailOptions);
     }
 
     async sendWelcome(){
-        await this.send('Welcome to mooveX lets help you find your dream apartment')
+        await this.send('welcome', 'Welcome to mooveX lets help you find your dream apartment')
     }
 
     async sendPasswordReset(){

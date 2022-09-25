@@ -12,19 +12,24 @@ router.route('/forgotPassword').post(authController.forgotPassword);
 
 router.route('/')
         .post(authController.signUp)
-        .get(authController.checkIfLoggedin, authController.Restrict('admin'), userController.getAllUsers)
+        .get(authController.protect, authController.RestrictTo('admin'), userController.getAllUsers)
 
-router.route('/me').get(authController.checkIfLoggedin, userController.myProfile)
+router.route('/me').get(authController.protect, userController.myProfile)
+                   .patch(userController.uploadUserPhoto,userController.resizeUserPhoto,userController.updateMe)
+                   
+router.route('/update-password')
+        .patch(authController.protect, authController.updatePassword)
 
 router.route('/:id')
-        .delete(authController.Restrict('admin'), userController.deleteAccount)
-        .patch(authController.checkIfLoggedin, userController.updateUser)
+        .delete(authController.RestrictTo('admin'), userController.deleteAccount)
+        .patch(authController.protect, userController.uploadUserPhoto,userController.resizeUserPhoto,
+        userController.updateUser)
         .get(userController.getOneUser)
 
 
 
 router.route('/activateAccount').post(userController.activateAccount)
-router.route('/deactivateAccount').patch(authController.checkIfLoggedin, userController.deactivateAccount)
+router.route('/deactivateAccount').patch(authController.protect, userController.deactivateAccount)
 
 
 router.route('/resetPassword/:token').post(authController.resetPassword);

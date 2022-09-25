@@ -1,0 +1,21 @@
+extends main 
+
+block content 
+    form.update-user-form 
+        label(for='image') select image cover
+        input(type="file" id="imageCover")
+        label(for='new-name') Full-Name
+        input(id='new-full-name')
+        label(for="new-email") Email
+        input(id='new-email' type= 'email') 
+        label(for='aboutMe') Bio 
+        input(id='aboutMe' placeholder='update your bio') 
+        input#update(type='submit' value='update')
+    form.update-password
+        label(for= 'oldPassword') Old Password
+        input(id='oldPassword' type="password")
+        label(for='newPassword') New Password 
+        input(id= 'newPassword' type="password")
+        label(for='confirmPassword') Confirm New Password         
+        input(id='confirmPassword' type="password")
+        input(type='submit' value='change password')

@@ -1,0 +1,47 @@
+doctype html
+head
+  title mooveX
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  link(href='https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap' rel='stylesheet')
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+  link(rel='stylesheet' href='css/signupstyle.css')
+section.ftco-section
+  .container
+    a(href='/')
+        .row.justify-content-center
+        .col-md-6.text-center.mb-5
+            h2.heading-section mooveX
+    .row.justify-content-center
+      .col-md-7.col-lg-5
+        .login-wrap
+          h3.text-center.mb-4 Create Your Account
+          form.signup-form(method= 'GET')
+            .form-group.mb-3
+              label.label(for='name') Full Name
+              input.form-control#name(type='text')
+              span.icon.fa.fa-user-o
+            .form-group.mb-3
+              label.label(for='email') Email Address
+              input.form-control#email(type='text')
+              span.icon.fa.fa-paper-plane-o
+            .form-group.mb-3
+              label.label(for='password') Password
+              input#password.form-control(type='password')
+              span.fa.fa-fw.fa-eye.field-icon.toggle-password(toggle='#password')
+              span.icon.fa.fa-lock
+            .form-group.mb-3
+              label.label(for='password') Confirm Password
+              input#password-confirm.form-control(type='password' placeholder='Password')
+              span.fa.fa-fw.fa-eye.field-icon.toggle-password(toggle='#password-confirm')
+              span.icon.fa.fa-lock
+            .form-group
+              button.form-control.btn.btn-primary.submit.px-3(type='submit' id='sign-up') Sign Up
+          p
+            | I&apos;m already a member! 
+            a(href='/login') Sign In
+script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js')
+script(src='js/signupjquery.min.js')
+script(src='js/signuppopper.js')
+script(src='js/signupbootstrap.min.js')
+script(src='mjs/signup.js')

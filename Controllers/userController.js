@@ -1,9 +1,69 @@
-const { findByIdAndDelete } = require('../Models/apartmentModel');
 const User= require('../Models/userModel')
+const sharp = require('sharp')
 const APIFeatures= require('../utils/apiFeatures')
 const Email= require('../utils/email')
 const catchAsync= require('../utils/catchAsync')
+const multer= require('multer')
+const AppError = require('../utils/appError')
 
+// const multerStorage= multer.diskStorage({
+//     //Setting storage destination
+//     destination: (req, file, cb) =>{
+//         cb(null, 'html/images/users');
+//         console.log(file)
+        
+//     },
+//     //Filename format
+    // filename: (req, file, cb)=>{
+    //     const ext= file.mimetype.split('/')[1];
+    //     console.log(req)
+    //     cb(null, `user-${req.params.id}-${Date.now()}.${ext}`)
+        
+    // }
+// });
+
+const multerStorage= multer.memoryStorage();
+
+// Filtering files that are not images 
+const multerFilter= (req, file, cb)=>{
+    if (file.mimetype.startsWith('image')){
+        cb(null, true)
+    }else{
+        cb(new AppError('Not an image! PLease upload only images', 400), false)
+    }
+}
+
+
+const upload= multer({
+    storage: multerStorage,
+    fileFilter: multerFilter
+
+});
+
+exports.resizeUserPhoto=(req, res, next)=>{
+    if(!req.file) return next();
+    if(req.params.id){
+        req.file.filename= `user-${req.params.id}-${Date.now()}.jpeg`
+    }
+    req.file.filename= `user-${res.locals.user._id}-${Date.now()}.jpeg`
+    sharp(req.file.buffer)
+        .resize(500,500)
+        .toFormat('jpeg')
+        .jpeg({quality: 90})
+        .toFile(`html/images/users/${req.file.filename}`);
+    next();
+};
+
+const filterObj = (obj, ...allowedFields) => {
+    const newObj = {};
+    Object.keys(obj).forEach(el => {
+      if (allowedFields.includes(el)) newObj[el] = obj[el];
+    });
+    return newObj;
+};
+
+
+exports.uploadUserPhoto= upload.single('imageCover');
 
 
 exports.getAllUsers= catchAsync(async(req, res, next)=>{
@@ -29,7 +89,6 @@ exports.getAllUsers= catchAsync(async(req, res, next)=>{
 
 exports.getOneUser= catchAsync(async (req, res, next)=>{
         const user= await User.findById(req.params.id)
-        console.log(user.role)
 
         if(!user){
             return (next(new AppError('no user with this id', 404)))
@@ -50,9 +109,18 @@ exports.getOneUser= catchAsync(async (req, res, next)=>{
 
 exports.updateUser= catchAsync(async (req, res, next)=>{
 
-        const user=await User.findByIdAndUpdate(req.params.id, req.body, {
+    //Disallowing pasword update here
+        const filteredBody= filterObj(req.body, 'name', 'email', 'aboutMe')
+        
+        if (req.body.password || req.body.passwordConfirm){
+            return next(new AppError('Wrong route to update password', 400))
+        };
+    //Adding imageCover name to filtered body
+        if (req.file) filteredBody.imageCover= req.file.filename
+
+        const user=await User.findByIdAndUpdate(req.params.id, filteredBody, {
             new: true, 
-            runValidators: true
+            runValidators: false
         })
 
         if(!user){
@@ -72,6 +140,7 @@ exports.myProfile= catchAsync(async (req, res, next)=>{
         const myID = res.locals.user.id
         const me= await User.findById(myID)
 
+
         if(me.role==='user'){
             me.populate('agent')
             
@@ -85,6 +154,37 @@ exports.myProfile= catchAsync(async (req, res, next)=>{
         })
 });
 
+exports.updateMe= catchAsync(async (req, res, next)=>{
+
+    const myID = res.locals.user.email
+    console.log(myID)
+
+    const filteredBody= filterObj(req.body, 'firstName','lastName', 'email', 'bio')
+        
+    if (req.body.password || req.body.passwordConfirm){
+        return next(new AppError('Wrong route to update password', 400))
+    };
+    //Adding imageCover name to filtered body
+    if (req.file) filteredBody.imageCover= req.file.filename
+
+    
+    const me= await User.findOneAndUpdate({email:myID}, filteredBody, {
+        new:true,
+        runValidators: true
+    });
+
+    // if(me.role==='user'){
+    //     me.populate('agent')
+        
+    // }else if(me.role === 'agent'){
+    //     me.populate('user')
+    // };
+
+    res.status(200).send({
+        status: 'success',
+        myDetail: me
+    })
+});
 
 exports.deactivateAccount= catchAsync(async(req, res, next)=>{
 

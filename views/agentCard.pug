@@ -1,0 +1,18 @@
+mixin agentCard(agent)
+    .fh5co-staff
+        a(href= `/user/${agent._id}`)
+            img.img-responsive(src=`images/${agent.imageCover}.jpg`, alt='Free HTML5 Templates by freeHTML5.co')
+            
+            h3= agent.firstName
+            p= agent.about
+            p.fh5co-social-icons
+                a(href='#')
+                i.icon-twitter2
+                a(href='#')
+                i.icon-facebook2
+                a(href='#')
+                i.icon-instagram
+                a(href='#')
+                i.icon-dribbble2
+                a(href='#')
+                i.icon-youtube

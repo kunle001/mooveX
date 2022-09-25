@@ -1,0 +1,23 @@
+mixin tCheapCard(apartment)
+        .col-lg-4.col-md-4.col-sm-6
+          .fh5co-blog.animate-box
+            a(href='#')
+              img.img-responsive(src=`images/${apartment.imageCover}.jpg`, alt)
+            .blog-text
+              .prod-title
+                if apartment.type==='building'
+                    h3
+                        a(href=`/apartment/${apartment.slug}`) 15% Deal Discount For House
+                        span #{apartment.name}
+                else 
+                    h3 
+                        a(href=`/apartment/${apartment.slug}`) 15% Deal Discount on Apartment
+                span.posted_by Sep. 15th
+                span.comment
+                  a(href)
+                    | #{apartment.reviews.length}
+                    i.icon-bubble2
+                p #{apartment.summary}
+                p
+                  a(href=`/${apartment.slug}`) Learn More...
+        .clearfix.visible-md-block 

@@ -1,0 +1,182 @@
+extends main 
+mixin newestProperties(apartment)
+  .col-md-4.animate-box
+    .property
+      a.fh5co-property(href=`/${apartment.slug}` style=`background-image: url(images/${apartment.imageCover}.jpg);`)
+        if apartment.type==='building'
+          span.status Sale
+          ul.list-details
+            li 2000 ft sq
+            li
+            li #{apartment.specifications.rooms} Bedroom:
+            li  #{apartment.specifications.bathrooms} Bathroom:
+            li #{apartment.specifications.garage} Garage:
+        else 
+          span.status Rent
+      .property-details
+        span.price $#{apartment.price}
+        p
+          | #{apartment.summary}
+        span.address
+          i.icon-map
+          | #{apartment.location.address}
+mixin apartments(apartment)
+  .col-md-4.animate-box
+    .property
+      a.fh5co-property(href=`/${apartment.slug}`, style=`background-image: url(images/apartments/${apartment.imageCover});`)
+        if apartment.type==='building'
+          span.status Sale
+        else 
+          span.status Rent
+        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
+        ul.list-details
+          if apartment.type==='building'
+            li 2000 ft sq
+            li
+            li #{apartment.specifications.rooms} Bedroom:
+            | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
+            li #{apartment.specifications.bathrooms} Bathroom:
+            | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
+            if apartment.specifications.garage
+              li #{apartment.specifications.garage} Garage:
+            else
+            if apartment.specifications.pools
+              li #{apartment.specifications.pools} Garage:
+            else
+          else
+            li Kitchen
+            li Room 
+            li Bathroom
+      | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
+      .property-details
+        h3 #{apartment.name}
+        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
+        span.price $#{apartment.price}
+        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
+        p
+          | #{apartment.summary}
+        | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
+        span.address
+          i.icon-map
+          | #{apartment.location.address}  
+
+block content
+    aside#fh5co-hero.js-fullheight
+      .flexslider.js-fullheight
+        ul.slides
+          li(style='background-image: url(images/here.jpg);')
+            .overlay
+            .container-fluid
+              .row
+                .col-md-8.col-md-offset-2.text-center.js-fullheight.slider-text
+                  .slider-text-inner
+                    h2.heading-title Our Properties
+                    p.fh5co-lead
+                      | Our apartments aound your location 
+                      i.icon-heart3
+    #fh5co-search-map
+      .search-property
+        .s-holder
+          h2 Search Properties
+          .row
+            .col-xxs-12.col-xs-12
+              .input-field
+                label(for='from') Keyword:
+                input#from-place.form-control(type='text' placeholder='Any')
+            .col-xxs-12.col-xs-12
+              section
+                label(for='class') Property Status:
+                select.cs-select.cs-skin-border
+                  option(value='' disabled='' selected='') Any
+                  option(value='1') Rent
+                  option(value='2') Sale
+            .col-xxs-12.col-xs-12
+              section
+                label(for='class') Property Type:
+                select.cs-select.cs-skin-border.input-half
+                  option(value='' disabled='' selected='') Any
+                  option(value='1') Building
+                  option(value='2') Office
+            .col-xxs-12.col-xs-12
+              .input-field
+                label(for='from') Location:
+                input#from-place.form-control(type='text' placeholder='Any')
+            .col-xxs-12.col-xs-12
+              section
+                label(for='class') Price:
+                .wide
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+            .col-xxs-12.col-xs-12
+              section
+                label(for='class') Bedrooms:
+                .wide
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+            .col-xxs-12.col-xs-12
+              section
+                label(for='class') Bathrooms:
+                .wide
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+            .col-xxs-12.col-xs-12
+              section
+                label(for='class') Area:
+                .wide
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+            .col-xxs-12.col-xs-12
+              section
+                label(for='class') Parking spots:
+                .wide
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+                  select.cs-select.cs-select-half.cs-skin-border.input-half
+                    option(value='' disabled='' selected='') Any
+                    option(value='1') Building
+                    option(value='2') Office
+            .col-xxs-12.col-xs-12.text-center
+              p
+                a.btn.btn-primary.btn-lg(href='#') Learn More
+      .map(style='background-image: url(images/cover_bg_1.jpg);')
+    #fh5co-properties.fh5co-section-gray
+      .container
+        .row
+          .col-md-8.col-md-offset-2.text-center.heading-section.animate-box
+            h3 Newest Properties
+            | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
+            p
+              | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit est facilis maiores, perspiciatis accusamus asperiores sint consequuntur debitis.
+        | &#x9;&#x9;&#x9;&#x9;
+        .row
+          each apartment in apartments
+            +apartments(apartment)
+            | &#x9;&#x9;&#x9;&#x9;&#x9;
+
+

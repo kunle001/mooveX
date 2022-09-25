@@ -12,7 +12,7 @@ const router= express.Router();
 router.use('/:apartmentId/reviews', reviewRouter);
 router.use('/:apartmentId/bookings', bookingRouter)
 
-router.use(authController.checkIfLoggedin)
+router.use(authController.protect)
 
 router.route('/')
     .get(apartmentController.getAllApartments)
@@ -23,7 +23,10 @@ router.route('/top-5-cheap').get(apartmentController.getTop5Cheap);
 
 router.route('/:id')
     .get(apartmentController.getOneApartment)
-    .patch(apartmentController.updateApartment)
+    .patch(apartmentController.uploadApartmentImages,
+        apartmentController.resizeApartmentImages,
+        apartmentController.uploadVideo,
+        apartmentController.updateApartment)
     .delete(apartmentController.deleteApartment)
 router.route('/around/:distance/center/:latlng/unit/:unit').get(apartmentController.getApartmentAround)
 

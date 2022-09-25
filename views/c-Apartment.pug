@@ -1,0 +1,66 @@
+extends main 
+
+block content 
+  .create-form
+    form.part__1
+      .form__group.form__photo-upload
+        img.form__user-photo(src=`/images/default.jpg`, alt='User photo')
+        input.form__upload(type='file', accept='image/*', id='photo', name='photo')
+        label(for='photo') Choose new photo
+      .form__group
+        label.form__label(for='name') Apartment Name
+        input#name.form__input
+      .form__group.ma-bt-md
+        label Kind of apartment
+        select#apartmentType
+          option(value="gender specific") gender specific
+          option(value="student") student
+          option(value="non student") non student
+          option(value="open") open
+      .form__group.ma-bt-md
+        label.form__label Type of apartment
+        select#Type
+          option(value="flat") Flat
+          option(value="self-contain") Self-Contain
+          option(value="single-room") Single-Room
+          option(value="building") Building
+      .form__group
+        label.form__label(for='summary') Market your apartment
+        input#summary.form__txts(style=('height: 8em'))     
+
+    form.form.form--login.part__2 
+      .form__group
+        label.form__label(for='pools') Pools
+        input#pools.form__input(type='number' min=0 width= 2)
+      .form__group
+        label(for='name') Rooms
+        input#rooms.form__number(type='number' min=1 width= 2)
+      .form__group
+        label Gender
+        select#gender
+          option(value="Male") Male
+          option(value="Female") Female
+      .form__group
+        label.form__label(for='price') Price
+        input#price.form__number(placeholder="how much is it cost in dollars")   
+    form.form.form--login.part__3 
+      .form__group
+        label.form__label(for='address') Address
+        input#address.form__input  
+      .form__group
+        label.form__label(for='coordinates') Coordinates
+        input#coordinates.form__input(placeholder="Latitude and Longitude")
+      .form__group
+        label.form__label(for='name') Bathrooms
+        input.form__input(type='number' id= "bathrooms" name="Bath rooms" min= 1 width= 2)
+      .form__group
+        label.form__label(for='name') Garage
+        input.form__input(type='number' id= "garage" min=0 width= 2)
+      .form__group
+        label Secrete Product ?
+        select#secretApartment
+          option(value="true") True
+          option(value="false") False     
+
+    .form__group
+        button.button#create(style=('font-size: 20px; font-style: inherit; color:black; background-color: green; padding-right:0')) Create

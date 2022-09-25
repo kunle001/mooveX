@@ -1,0 +1,176 @@
+extends main
+include reviewCard
+
+block append head
+    meta(charset='utf-8')
+    title mooveX
+    meta(content='width=device-width, initial-scale=1.0' name='viewport')
+    meta(content='' name='keywords')
+    meta(content='' name='description')
+    // Favicons
+    link(href='Pimg/favicon.png' rel='icon')
+    link(href='Pimg/apple-touch-icon.png' rel='apple-touch-icon')
+    // Google Fonts
+    link(href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700' rel='stylesheet')
+    // Bootstrap CSS File
+    link(href='lib/bootstrap/css/bootstrap.min.css' rel='stylesheet')
+    // Libraries CSS Files
+    link(href='lib/font-awesome/css/font-awesome.min.css' rel='stylesheet')
+    link(href='lib/animate/animate.min.css' rel='stylesheet')
+    link(href='lib/ionicons/css/ionicons.min.css' rel='stylesheet')
+    link(href='lib/owlcarousel/assets/owl.carousel.min.css' rel='stylesheet')
+    // Main Stylesheet File
+    link(href='css/property.css' rel='stylesheet')
+    
+block content 
+  section.intro-single
+    .container
+      .row
+        .col-md-12.col-lg-8
+          .title-single-box
+            h1.title-single #{apartment.name}
+            span.color-text-a #{apartment.location.address}
+        .col-md-12.col-lg-4
+          nav.breadcrumb-box.d-flex.justify-content-lg-end(aria-label='breadcrumb')
+            ol.breadcrumb
+              li.breadcrumb-item
+                a(href='index.html') Home
+              li.breadcrumb-item
+                a(href='property-grid.html') Properties
+              li.breadcrumb-item.active(aria-current='page')
+                | #{apartment.name}
+  // / Intro Single End /
+  // / Property Single Star /
+  section.property-single.nav-arrow-b
+    .container
+      .row
+        .col-sm-12
+          #property-single-carousel.owl-carousel.owl-arrow.gallery-property
+            each image in apartment.images
+              .carousel-item-b
+                img(src=`Images/apartments/${image}` alt='')
+          .row.justify-content-between
+            .col-md-5.col-lg-4
+              .property-price.d-flex.justify-content-center.foo
+                .card-header-c.d-flex
+                  .card-box-ico
+                    span.ion-money $
+                  .card-title-c.align-self-center
+                    h5.title-c #{apartment.price}
+              .property-summary
+                .row
+                  .col-sm-12
+                    .title-box-d.section-t4
+                      h3.title-d Quick Summary
+                .summary-list
+                  ul.list
+                    li.d-flex.justify-content-between
+                      strong Property ID:
+                      span #{apartment.id}
+                    li.d-flex.justify-content-between
+                      strong Location:
+                      span #{apartment.location.address}
+                    li.d-flex.justify-content-between
+                      strong Property Type:
+                      span #{apartment.type}
+                    li.d-flex.justify-content-between
+                      strong Status:
+                      span Sale
+                    if apartment.type==='building'
+                      //- li.d-flex.justify-content-between
+                      //-     strong Area:
+                      //-     span
+                      //-     | 340m
+                      //-     sup 2
+                      li.d-flex.justify-content-between
+                          strong Rooms:
+                          span #{apartment.specifications.room}
+                      li.d-flex.justify-content-between
+                          strong Baths:
+                          span #{apartment.specifications.bathrooms}
+                      li.d-flex.justify-content-between
+                          strong Garage:
+                          span #{apartment.specifications.garage}
+                    else
+            .col-md-7.col-lg-7.section-md-t3
+              .row
+                .col-sm-12
+                  .title-box-d
+                    h3.title-d Property Description
+              .property-description
+                p.description.color-text-a
+                  | #{apartment.summary}
+                p.description.color-text-a.no-margin(style= "background-colour= green")
+                  | mooveX endorses this Apartments
+                  | it is verified with all the Valid Papers,
+                  | If you need help on validation, contact their agents, to reach directly to our customer care.
+              .row.section-t3
+                .col-sm-12
+                  .title-box-d
+                    h3.title-d Amenities
+              .amenities-list.color-text-a
+                ul.list-a.no-margin
+                  li Balcony
+                  li Outdoor Kitchen
+                  li Cable Tv
+                  li Deck
+                  li Tennis Courts
+                  li Internet
+                  li Parking
+                  li Sun Room
+                  li Concrete Flooring
+        .col-md-10.offset-md-1
+          ul#pills-tab.nav.nav-pills-a.nav-pills.mb-3.section-t3(role='tablist')
+            li.nav-item
+              a#pills-video-tab.nav-link.active(data-toggle='pill' href='#pills-video' role='tab' aria-controls='pills-video' aria-selected='true') Video
+            li.nav-item
+              a#pills-plans-tab.nav-link(data-toggle='pill' href='#pills-plans' role='tab' aria-controls='pills-plans' aria-selected='false') Floor Plans
+            li.nav-item
+              a#pills-map-tab.nav-link(data-toggle='pill' href='#pills-map' role='tab' aria-controls='pills-map' aria-selected='false') Map
+          #pills-tabContent.tab-content
+            #pills-video.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-video-tab')
+              iframe(src=`images/apartments/videos/${apartment.video}` width='100%' height='460' frameborder='0' webkitallowfullscreen='' mozallowfullscreen='' allowfullscreen='')
+            #pills-plans.tab-pane.fade(role='tabpanel' aria-labelledby='pills-plans-tab')
+              img.img-fluid(src=`images/plan/${apartment.plan[0]}` alt='')
+            #pills-plans.tab-pane.fade(role='tabpanel' aria-labelledby='pills-map-tab')
+          #map(style="width= 1000px height= 500px" data-loc= `${JSON.stringify(apartment.location)}`)            
+
+          h1 Reviews
+
+            section.section-reviews
+              .reviews
+                each review in apartment.reviews
+                    +reviewCard(review)         
+          if user 
+            .review
+              textarea#message.comment Type your comment here
+              br
+              label#id(for="rating") Rating 
+              input#rating(type="number" min=0 max=3) 
+              input#review(data-apartment-id=`${apartment.id}` type="submit" value="Send")
+            .myButton
+              a(data-apartment-id=`${apartment.id}` id= 'booking') Buy 
+          else 
+            .myButton
+              a(href='/login') Login Here to purchase 
+
+
+
+
+
+  script(src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous')
+  script(src='lib/jquery/jquery.min.js')
+  script(src='lib/jquery/jquery-migrate.min.js')
+  script(src='lib/popper/popper.min.js')
+  script(src='lib/bootstrap/js/bootstrap.min.js')
+  script(src='lib/easing/easing.min.js')
+  script(src='lib/owlcarousel/owl.carousel.min.js')
+  script(src='lib/scrollreveal/scrollreveal.min.js')
+  // Contact Form JavaScript File
+  script(src='contactform/contactform.js')
+  // Template Main Javascript File
+  script(src='js/Pmain.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js')
+  script(src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js')
+  script(src="/mjs/mapbox.js")
+  script(src='/mjs/review.js')

@@ -17,7 +17,7 @@ exports.Checked=catchAsync(async (req,res, next)=>{
     const user= await User.findById(req.body.user)
     console.log(user)
     if (!user.checked){
-        return (next(new AppError('you are not checked you cannot make reviews'), 400))
+        return (next(new AppError('you are not checked you cannot make reviews', 400)))
     }
     next();
 
@@ -26,7 +26,11 @@ exports.Checked=catchAsync(async (req,res, next)=>{
 
 exports.createReview= catchAsync(async (req, res, next)=>{
     
-        const review= await Review.create(req.body)
+        const review= await Review.create(req.body);
+
+        if(!review){
+            return next(new AppError('an error occured while creating this', 400))
+        }
 
         res.status(201).json({
             status: 'success',

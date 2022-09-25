@@ -1,0 +1,134 @@
+extends main
+
+mixin agents(agent)
+    .col-sm-4.text-center.animate-box(data-animate-effect='fadeIn')
+        .fh5co-staff
+            img.img-responsive(src=`images/${agent.imageCover}.jpg`, alt='Free HTML5 Templates by freeHTML5.co')
+            h3 #{agent.firstName} #{agent.lastName}
+            span.list-prop Property List: 5
+            p= agent.aboutMe
+            p.fh5co-social-icons
+                a(href='#')
+                    i.icon-twitter2
+                a(href='#')
+                    i.icon-facebook2
+                a(href='#')
+                    i.icon-instagram
+                a(href='#')
+                    i.icon-dribbble2
+                a(href='#')
+                    i.icon-youtube
+            p
+                a.btn.btn-primary.btn-outline(href='#') View Properties
+
+
+block content
+    aside#fh5co-hero.js-fullheight
+        .flexslider.js-fullheight
+            ul.slides
+                li(style='background-image: url(images/agent.jpg);')
+                    .overlay
+                    .container-fluid
+                        .row
+                            .col-md-8.col-md-offset-2.text-center.js-fullheight.slider-text
+                                .slider-text-inner
+                                    h2.heading-title Our Agents
+                                    p.fh5co-lead
+                                        | Attends to you with 
+                                        i.icon-heart3
+    #fh5co-search-map
+        .search-property
+            .s-holder
+                h2 Search Properties
+                .row
+                    .col-xxs-12.col-xs-12
+                        .input-field
+                            label(for='from') Keyword:
+                            input.form-control#from-place(type='text', placeholder='Any')
+                    .col-xxs-12.col-xs-12
+                        section
+                            label(for='class') Property Status:
+                            select.cs-select.cs-skin-border
+                                option(value, disabled, selected) Any
+                                option(value='1') Rent
+                                option(value='2') Sale
+                    .col-xxs-12.col-xs-12
+                        section
+                            label(for='class') Property Type:
+                            select.cs-select.cs-skin-border.input-half
+                                option(value, disabled, selected) Any
+                                option(value='1') Building
+                                option(value='2') Office
+                    .col-xxs-12.col-xs-12
+                        .input-field
+                            label(for='from') Location:
+                            input.form-control#from-place(type='text', placeholder='Any')
+                    .col-xxs-12.col-xs-12
+                        section
+                            label(for='class') Price:
+                            .wide
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                    .col-xxs-12.col-xs-12
+                        section
+                            label(for='class') Bedrooms:
+                            .wide
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                    .col-xxs-12.col-xs-12
+                        section
+                            label(for='class') Bathrooms:
+                            .wide
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                    .col-xxs-12.col-xs-12
+                        section
+                            label(for='class') Area:
+                            .wide
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                    .col-xxs-12.col-xs-12
+                        section
+                            label(for='class') Parking spots:
+                            .wide
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                                select.cs-select.cs-select-half.cs-skin-border.input-half
+                                    option(value, disabled, selected) Any
+                                    option(value='1') Building
+                                    option(value='2') Office
+                    .col-xxs-12.col-xs-12.text-center
+                        p
+                            a.btn.btn-primary.btn-lg(href='#') Learn More
+        .map(style='background-image: url(images/apartment.jpg);')
+    #fh5co-about
+        .container
+            .row
+                each agent in agents 
+                    +agents(agent)

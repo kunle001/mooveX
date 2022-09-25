@@ -15,8 +15,7 @@ const apartmentSchema= new mongoose.Schema({
     },
     slug: String,
     roomspaces:{
-        type: Number, 
-        required: [true, 'please specify the number of rooms available'],
+        type: Number
     },
     apartmentType: {
         type: String,
@@ -24,7 +23,23 @@ const apartmentSchema= new mongoose.Schema({
         default: 'open'
 
     },
+    type: {
+        type: String,
+        enum: ['flat', 'self-contain', 'single-room', 'building'],
+        default: "single-room"
+    },
+    specifications:{
+        type: {
+            type: String,
+            default: 'Specs'
+        },
+        bathrooms: Number,
+        garage: Number,
+        pool: Number,
+        rooms: Number,
+        kitchen: Number
 
+    },
     gender: {
         type: String,
         enum: ['Male', 'Female'],
@@ -44,7 +59,8 @@ const apartmentSchema= new mongoose.Schema({
         address: String,
         description: String
     },
-
+    plan: [String],
+    video: String,
     roomOccupants: Number,
     summary:{
         type: String, 
@@ -88,6 +104,10 @@ const apartmentSchema= new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     }],
+    amenities: [{
+        type: String
+    }],
+    createdAt: Date
 },
 { toJSON: { virtuals: true }, toObject: { virtuals: true }});
 
@@ -101,19 +121,35 @@ apartmentSchema.virtual('reviews', {
 })
 
 apartmentSchema.pre('save', function(next) {
+
     this.slug = slugify(this.name, { lower: true });
+    this.createdAt= Date.now()
+    if (this.specifications.bathrooms){
+        if (!this.ammenities.includes('bathrooms')){
+            this.ammenties.append('bathrooms')
+        }
+    }else if(this.specifications.garage){
+        if (!this.ammenities.includes('garage')){
+            this.ammenities.append('garage')
+        }
+    }else if (this.specifications.garage){
+        if (!this.ammenities.includes('pools')){
+            this.ammenities.append('pools')
+        }
+    }
     next();
   });
+
 
 apartmentSchema.pre(/^findOne/, function(next){
     this.populate({
         path: 'owners',
-        select: 'name email imageCover -_id '
+        select: 'name email imageCover'
     });
     
     this.populate({
         path: 'agents',
-        select: 'name email imageCover -_id'
+        select: 'name email imageCover'
     })
 
     next();

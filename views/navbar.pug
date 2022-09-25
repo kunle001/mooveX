@@ -1,0 +1,46 @@
+#fh5co-wrapper
+    #fh5co-page
+        header#fh5co-header-section.sticky-banner
+            .container
+                .nav-header
+                    a.js-fh5co-nav-toggle.fh5co-nav-toggle.dark(href='#')
+                        i
+                    h1#fh5co-logo
+                        a(href='/')
+                            i.icon-home
+                            | mooveX 
+                                
+                    
+                    //  START #fh5co-menu-wrap 
+                    nav#fh5co-menu-wrap(role='navigation')
+                        ul.sf-menu#fh5co-primary-menu
+                            li
+                                a(href='/agents') Agents
+                            li
+                                a(href='/') Blog
+
+                            if user
+                                li
+                                    a#logout Logout
+
+                                li
+                                    a(href='/my-profile') My Profile
+                                        li
+                                            a.nav__el(href='/my-profile')
+                                                img.nav__user-img(src=`/images/users/${user.imageCover}` alt=`Photo of ${user.name}`)
+                                if user.role==='admin'
+                                    li 
+                                        a(href='/create-apartment') Create Apartment
+                                else 
+                                    
+                                    
+                            else 
+                                li
+                                    a(href='/login') Login/SignUp
+
+                                        
+
+
+
+
+

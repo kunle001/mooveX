@@ -42,7 +42,7 @@ reviewSchema.index({apartment: 1, user:1}, {unique:true})
 reviewSchema.pre(/^find/, function(next){
     this.populate({
         path: 'user',
-        select: 'name profilePic role'
+        select: 'firstName lastName imageCover role'
     });
     next();
 })

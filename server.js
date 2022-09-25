@@ -1,15 +1,8 @@
 const mongoose= require('mongoose')
 const app= require('./app');
-const dotenv= require('dotenv')
+const dotenv= require('dotenv');
 
 
-// process.on('uncaughtException', err=>{
-//     console.log('uncaught exceptions, shutting down💥💥...')
-//     console.log(err.name, err.message)
-//     server.close(()=>{
-//         process.exit(1)
-//     })
-// });
 
 
 dotenv.config({path: './config.env'});

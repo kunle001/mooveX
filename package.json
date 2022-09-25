@@ -19,15 +19,22 @@
   "homepage": "https://github.com/kunle001/mooveX#readme",
   "dependencies": {
     "@agm/core": "^3.0.0-beta.0",
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
+    "express-fileupload": "^1.4.0",
+    "html-to-text": "^8.2.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.3",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.8",
     "passport-google-oauth": "^2.0.0",
     "passport-twitter": "^0.1.5",
-    "satelize": "^0.2.0",
-    "slugify": "^1.6.5"
+    "pug": "^3.0.2",
+    "satelize": "^0.1.2",
+    "sharp": "^0.31.0",
+    "slugify": "^1.6.5",
+    "stripe": "^10.10.0"
   },
   "devDependencies": {
     "@types/googlemaps": "^3.43.3"

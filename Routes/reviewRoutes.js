@@ -4,13 +4,13 @@ const authController= require('../Controllers/authController')
 
 const router= express.Router({mergeParams: true})
 
-router.use(authController.checkIfLoggedin)
+router.use(authController.protect)
 
 router.route('/')
         .post(
-            authController.Restrict('admin'),
+            authController.RestrictTo('user'),
             reviewController.setAPartmentUserIds,
-            reviewController.Checked,
+            // reviewController.Checked,
             reviewController.createReview
         )
         .get(reviewController.getReviews)

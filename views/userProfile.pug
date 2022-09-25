@@ -1,0 +1,85 @@
+extends main 
+
+block append head
+  link(rel='stylesheet', href='css/userprofile.css')
+block content
+  .container.emp-profile
+    form(method='post')
+      .row
+        .col-md-4
+          .profile-img
+          .form__group.form__photo-upload
+            img.form__profile-photo(src=`/images/users/${user.imageCover}`, alt='User photo')
+            input.form__upload(type='file', accept='image/*', id='imageCover', name='photo', style="margin-down: 10px ")
+            label(for='imageCover') Change Picture
+        .col-md-6
+          .profile-head
+            h3
+              | #{user.firstName.toUpperCase()}
+            h6
+              | #{user.role}
+            p.proile-rating
+              | RANKINGS : 
+              span 8/10
+            ul#myTab.nav.nav-tabs(role='tablist')
+              li.nav-item
+                a#home-tab.nav-link.active(data-toggle='tab' href='#home' role='tab' aria-controls='home' aria-selected='true') About
+              li.nav-item
+                a#profile-tab.nav-link.active(data-toggle='tab' href='#profile' role='tab' aria-controls='profile' aria-selected='false') Bookings/Purchases
+        .row
+          .col-md-4
+            .profile-work
+              p WORK LINK
+              a(href='') -------
+              p OCCUPATION
+              a(href='') #{user.occupation}
+          .col-md-8
+              #home.tab-pane.show.active(role='tabpanel' aria-labelledby='home-tab')
+                .row
+                  .col-md-6
+                    label User Id
+                  .col-md-6
+                    p #{user._id}
+                .row
+                  .col-md-6
+                    label Name
+                  .col-md-6
+                    p #{user.firstName} #{user.lastName}
+                .row
+                  .col-md-6
+                    label Email
+                  .col-md-6
+                    p #{user.email} 
+                .row
+                  .col-md-6
+                    label Phone
+                  .col-md-6
+                    p #{user.Tel}
+                .row
+                  .col-md-6
+                    label Role
+                  .col-md-6
+                    p #{user.role}
+              
+              #profile.tab-pane.fade(role='tabpanel' aria-labelledby='profile-tab')
+                if user.role==='agent'
+                  .row
+                    .col-md-6
+                      label Experience
+                    .col-md-6
+                      p Expert
+                else
+                each payment in payments
+                  .row
+                    .col-md-6
+                      label #{payment.apartment.name}
+                    .col-md-6
+                      p $#{payment.price} paid                        
+
+                .row
+                  .col-md-6
+                    label Your Bio
+                      p #{user.aboutMe}
+                a(href='/updateme') edit profile                      
+
+

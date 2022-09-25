@@ -5,7 +5,7 @@ const authController= require('../Controllers/authController')
 
 const router= express.Router({mergeParams:true});
 
-router.use(authController.checkIfLoggedin)
+router.use(authController.protect)
 
 router.route('/:apartmentId/agent/:agentId').post(bookingController.createBooking)
 

@@ -1,0 +1,16 @@
+mixin apartmentCard(apartment)
+    a(href=`/${apartment.slug}`)
+        .slidescontainer
+            img.photo(src=`images/apartments/${apartment.imageCover}`, alt="Image 1")
+            each image in apartment.images
+                img.photo(src=`images/apartments/${image}`, alt="Image 1")    
+                
+        each star in [1,2,3,4,5]
+            if apartment.ratingsAverage>= star
+                span.fa.fa-star.checked
+            else 
+                span.fa.fa-star.unchecked
+        .prop-details
+            span.price $#{apartment.price}
+            h3= apartment.name
+
