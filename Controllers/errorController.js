@@ -78,6 +78,8 @@ module.exports=(err, req, res, next)=>{
             error= handleJWTError(err)
         }else if(err.name==='TokenExpiredError'){
             error= handleTokenExpired(err)
+        }else{
+            error=new AppError('something went wrong', 400)
         }
 
         sendProdErr(error, res)

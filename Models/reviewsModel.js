@@ -43,6 +43,9 @@ reviewSchema.pre(/^find/, function(next){
     this.populate({
         path: 'user',
         select: 'firstName lastName imageCover role'
+    }).populate({
+        path: 'apartment',
+        select: '-_id'
     });
     next();
 })

@@ -2,10 +2,12 @@ const crypto= require('crypto')
 const jwt= require('jsonwebtoken')
 const { promisify } = require('util')
 const User= require('../Models/userModel')
-// const Agent= require('../Models/paymentModel')
 const Email= require('../utils/email')
 const catchAsync= require('../utils/catchAsync')
 const AppError = require('../utils/appError')
+
+
+
 
 const signToken= id=>{
     return jwt.sign({id}, process.env.JWT_SECRET, {
@@ -47,7 +49,7 @@ exports.login=catchAsync(async (req, res, next)=>{
 }); 
 
 exports.signUp = catchAsync(async (req, res, next)=>{
-    
+        
         const user= await User.create(req.body);
         const url= '127.0.0.1:3000'
         await new Email(user, url).sendWelcome()

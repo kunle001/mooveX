@@ -1,6 +1,13 @@
 const nodemailer= require('nodemailer')
 const htmlToText= require('html-to-text')
 const pug= require('pug')
+const Sib = require('sib-api-v3-sdk')
+
+const client = Sib.ApiClient.instance
+const apiKey = client.authentications['api-key']
+apiKey.apiKey = "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"
+
+const tranEmailApi = new Sib.TransactionalEmailsApi()
 
 module.exports = class Email {
     constructor(user, url){
@@ -10,9 +17,30 @@ module.exports = class Email {
         this.from = `Oluwole Olanipekun <${process.env.EMAIL_FROM}>`; 
     }
 
-    newTransport(){
-        if (process.env.NODE_ENV === 'production'){
-            return 1;
+    newTransport(subject,html){
+        if (process.env.NODE_ENV === 'development'){
+            const sender = {
+                email: 'adekunle.olanipekun@gmail.com',
+                name: 'Adekunle',
+            }
+            
+            const receivers = [
+                {
+                    email: this.to,
+                    name: this.firstName
+                },
+            ]
+            return (                
+                tranEmailApi
+                    .sendTransacEmail({
+                        sender,
+                        to: receivers,
+                        subject: "Hello User",
+                        htmlContent: html,
+                        // textContent: htmlToText.fromString(html)
+                    })
+
+            )
         }
 
         return nodemailer.createTransport({
@@ -41,7 +69,14 @@ module.exports = class Email {
             text: htmlToText.fromString(html)
         };
         //2) create transport 
-        await this.newTransport().sendMail(mailOptions);
+        if (process.env.NODE_ENV==='development'){
+             await this.newTransport(subject, html)
+             console.log('sent mail')
+            }
+        else{
+
+            await this.newTransport().sendMail(mailOptions);
+        }
     }
 
     async sendWelcome(){
