@@ -10,7 +10,7 @@ const router= express.Router()
 router.use(authController.checkIfLoggedIn)
 
 router.get('/',paymentController.createPaymentCheckout,viewsController.homePage);
-
+router.get('/admin-panel', viewsController.adminPanel)
 router.get('/login', viewsController.login)
 router.get('/agents', viewsController.agentPage)
 router.get('/my-profile', viewsController.userProfile);
@@ -21,4 +21,5 @@ router.get('/updateme', viewsController.updateUser)
 router.get('/forgot-password', viewsController.forgotPassword)
 router.get('/:slug', viewsController.apartmentPage);
 router.get('/user/:userId', viewsController.Profile)
+
 module.exports= router;

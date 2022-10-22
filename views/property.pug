@@ -139,6 +139,7 @@ block content
 
             section.section-reviews
               .reviews
+                -console.log(apartment)
                 each review in apartment.reviews
                     +reviewCard(review)         
           if user 

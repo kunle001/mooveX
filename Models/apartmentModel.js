@@ -145,11 +145,12 @@ apartmentSchema.pre(/^findOne/, function(next){
     this.populate({
         path: 'owners',
         select: 'name email imageCover'
-    });
-    
-    this.populate({
+    }).populate({
         path: 'agents',
         select: 'name email imageCover'
+    }).populate({
+        path: 'reviews',
+        select: '-createdAt'
     })
 
     next();

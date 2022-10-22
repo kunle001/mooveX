@@ -141,6 +141,10 @@ exports.updateUser = catchAsync(async(req, res, next)=>{
 
 exports.forgotPassword= async(req, res, next)=>{
     res.status(200).render('forgotPassword')
+};
+
+exports.adminPanel= async(req, res, next)=>{
+    res.status(200).render('adminPanel')
 }
 
 
