@@ -20,6 +20,9 @@ const createSendToken= (user, statusCode, req, res)=>{
     const token= signToken(user._id);
 
     res.cookie('secretoken', token, {
+        expires: new Date(
+            Date.now() + 2*24*60*60*1000
+        ),
         httpOnly: true,
         secure: req.secure
     })

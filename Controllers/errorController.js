@@ -35,6 +35,14 @@ const sendErrorDev= (err,res)=>{
         message: err.message,
         stack: err.stack
     })
+
+    console.error('ERROR 💥', err);
+    return res.status(err.statusCode).render('error', {
+      title: 'Something went wrong!',
+      msg: err.message
+    });
+
+    
 };
 
 const sendProdErr= (err, res)=>{
@@ -56,6 +64,14 @@ const sendProdErr= (err, res)=>{
             message: 'Something went very wrong'
         })
     }
+
+    if (err.isOperational) {
+      return res.status(err.statusCode).render('error', {
+        title: 'Something went wrong!',
+        msg: "Try Again"
+      });
+    }
+
 }
 
 
@@ -65,7 +81,7 @@ module.exports=(err, req, res, next)=>{
     err.status= err.status || 'error'
     
     if(process.env.NODE_ENV==='development'){
-        sendErrorDev(err, res)
+        sendErrorDev(err, req,res)
     }else if (process.env.NODE_ENV==='production'){
         
         if(err.code=== 11000){

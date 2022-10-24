@@ -22,6 +22,10 @@ const globalError= require('./Controllers/errorController')
 
 // start App
 const app=express();
+
+//Trust proxy
+app.enable('trust proxy')
+
 //setting app to use pug
 
 app.use(session({secret: "thisissecretkey"}));
