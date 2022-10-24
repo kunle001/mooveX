@@ -2,6 +2,8 @@ const path= require('path')
 const cookieParser = require('cookie-parser')
 const express= require('express')
 const morgan= require('morgan')
+const passport= require('passport')
+const session= require('express-session')
 
 //Roters
 const apartmentRouter= require('./Routes/apartmentRoutes')
@@ -22,6 +24,11 @@ const globalError= require('./Controllers/errorController')
 const app=express();
 //setting app to use pug
 
+app.use(session({secret: "thisissecretkey"}));
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.engine('pug', require('pug').__express)
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'))
@@ -36,7 +43,6 @@ app.use(express.json({}));
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
-app.use(cookieParser());
 // app.use(express.urlencoded({ extended: true, limit: '10kb' }));// Body parser, reading data from body into req.body
 
 

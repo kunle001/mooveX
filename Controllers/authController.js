@@ -9,6 +9,7 @@ const AppError = require('../utils/appError')
 
 
 
+
 const signToken= id=>{
     return jwt.sign({id}, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN
@@ -132,6 +133,7 @@ exports.protect= catchAsync(async (req, res, next)=>{
 
 });
 
+
 exports.checkIfLoggedIn= async (req, res, next)=>{
     
     if(req.cookies.secretoken){
@@ -229,3 +231,6 @@ exports.RestrictTo = (...roles) => {
       next();
     };
   };
+  
+
+

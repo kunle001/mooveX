@@ -5,6 +5,8 @@ const AppError = require('../utils/appError');
 const User= require('../Models/userModel')
 const APIFeatures= require('../utils/apiFeatures')
 const Payment= require('../Models/paymentModel')
+const facebookStrategy= require('passport-facebook').Strategy
+const passport= require('passport')
 
 
 exports.homePage=catchAsync(async (req, res)=>{
@@ -147,6 +149,49 @@ exports.adminPanel= async(req, res, next)=>{
     res.status(200).render('adminPanel')
 }
 
+
+exports.sigupFacebook= catchAsync(async(req, res, next)=>{
+
+    passport.use(new facebookStrategy({
+        clientID: process.env.FACEBOOKCLIENTID,
+        clientSecret: process.env.FACEBOOKCLIENTSECRET,
+        callbackURL: "http://127.0.0.1:5000/api/v1/users/facebook/callback",
+        profileFields: ['id', 'displayName', 'name', 'gender',"picture.type(large)", "email" ]
+    },//facebook will send back the token and profile 
+    async function(token, refreshToken, profile, done){
+            const data= {
+                id: profile.id,
+                token,
+                name: profile.name.givenName+' '+profile.name.familyName,
+                email: profile.emails[0].value,
+                gender:profile.gender,
+                photo: profile.photos[0].value
+            }
+            const user= await User.create(data)
+            console.log(user)
+
+            if(err){
+             console.log(err) 
+             throw err;
+            }    
+            console.log(user)
+            return done(null,  user)
+
+    }));
+
+
+    passport.serializeUser(function(user, done){
+        done(null, user.id)
+    })
+    
+    passport.deserializeUser(async function(id, done){
+
+        await User.findById(id, function(err,user){
+            done(err,user)
+        })
+    });
+    next();
+});
 
 
 
