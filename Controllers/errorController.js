@@ -81,9 +81,8 @@ module.exports=(err, req, res, next)=>{
     err.status= err.status || 'error'
     
     if(process.env.NODE_ENV==='development'){
-        sendErrorDev(err, req,res)
+        sendErrorDev(err,res)
     }else if (process.env.NODE_ENV==='production'){
-        
         if(err.code=== 11000){
             error= handleDuplicateErrorDB(err)
         }else if(err.name==='CastError'){

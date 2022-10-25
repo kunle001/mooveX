@@ -21,7 +21,7 @@ const createSendToken= (user, statusCode, req, res)=>{
 
     res.cookie('secretoken', token, {
         expires: new Date(
-            Date.now() + 2*24*60*60*1000
+            Date.now() + 2*2*60*60*1000
         ),
         httpOnly: true,
         secure: req.secure

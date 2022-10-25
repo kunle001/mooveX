@@ -1,3 +1,5 @@
+const { default: axios } = require("axios");
+
 const findState= ()=>{
     
     const status= document.querySelector('.fh5co-wrapper');
@@ -12,8 +14,10 @@ const findState= ()=>{
         .then(res=> res.json())
         .then(data=>{
             console.log(data.latitude, data.longitude)
+            const lat= data.latitude
+            const long= data.longitude
+            return(lat, long)
         })
-        res.locals.location= {latitude: data.latitude, longitude: data.longitude}
     };
     const error=()=>{
         alert('Unable to retrieve your location')
@@ -25,9 +29,7 @@ const findState= ()=>{
 
 
 window.addEventListener('load',()=>{
-findState
-const user= res.locals.user
-user.currentLocation= [data.latitude, data.longitude]
+findState()
 });
 
 
