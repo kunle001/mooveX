@@ -10,13 +10,12 @@ const AppError = require('../utils/appError')
 //     //Setting storage destination
 //     destination: (req, file, cb) =>{
 //         cb(null, 'html/images/users');
-//         console.log(file)
+//         (file)
         
 //     },
 //     //Filename format
     // filename: (req, file, cb)=>{
     //     const ext= file.mimetype.split('/')[1];
-    //     console.log(req)
     //     cb(null, `user-${req.params.id}-${Date.now()}.${ext}`)
         
     // }
@@ -157,7 +156,6 @@ exports.myProfile= catchAsync(async (req, res, next)=>{
 exports.updateMe= catchAsync(async (req, res, next)=>{
 
     const myID = res.locals.user.email
-    console.log(myID)
 
     const filteredBody= filterObj(req.body, 'firstName','lastName', 'email', 'bio')
         

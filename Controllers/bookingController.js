@@ -17,7 +17,6 @@ exports.createBooking= async (req, res, next)=>{
             data: booking
         })
     }catch(err){
-        console.log(err)
         res.status(400).json({
             message: "You already Have a Booking with this agent and this apartment"
         })

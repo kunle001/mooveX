@@ -12,7 +12,7 @@ const sharp = require('sharp');
 const multerStorage = multer.memoryStorage({
         destination: (req, file, cb) =>{
         if (file.mimetype.startsWith('video')){ 
-            console.log(file)
+            (file)
             return cb(null, 'html/images/apartments/videos')
             
         }
@@ -20,7 +20,6 @@ const multerStorage = multer.memoryStorage({
     filename: (req, file, cb)=>{
         if (file.mimetype.startsWith('video')) {
             const ext= file.mimetype.split('/')[1];
-            console.log(req)
             return cb(null, `user-${req.params.id}-${Date.now()}.${ext}`)
         }
 
@@ -35,7 +34,6 @@ const multerFilter = (req, file, cb) => {
     cb(null, true)
   }
   else {
-    console.log(file)
     cb(new AppError('Not an image! Please upload only images.', 400), false);
   }
 };
@@ -108,7 +106,6 @@ exports.uploadVideo= catchAsync(async(req, res, next)=>{
             filename: (req, file, cb)=>{
                     const ext= file.mimetype.split('/')[1];
                     cb(null, `apartment-${req.params.id}-video-${Date.now()}.${ext}`)
-                    console.log('file named')
                 }
        });
        const fileFilter= (req, file, cb)=> {
@@ -129,7 +126,6 @@ exports.uploadVideo= catchAsync(async(req, res, next)=>{
     })
     req.body.video= `apartment-${req.params.id}-video-${Date.now()}.mp4`
     videoUpload.single(req.files.video)
-    console.log('got here') 
     }
     
 
@@ -164,7 +160,7 @@ exports.getAllApartments= catchAsync(async (req, res, next)=>{
 
 
 exports.getOneApartment= catchAsync(async(req, res, next)=> {
-        console.log('got here')
+
         const apartment= await Apartment.findById(req.params.id).populate('reviews')
 
         if(!apartment){
@@ -217,7 +213,6 @@ exports.updateApartment = catchAsync(async (req, res, next)=>{
           });
           
         if(!apartment) return next(new AppError('apartment was not found', 404))
-          console.log("Entered Here")
         res.status(200).json({
             message: 'success', 
             data: apartment

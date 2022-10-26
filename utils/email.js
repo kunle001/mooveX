@@ -71,7 +71,6 @@ module.exports = class Email {
         //2) create transport 
         if (process.env.NODE_ENV==='development'){
              await this.newTransport(subject, html)
-             console.log('sent mail')
             }
         else{
 

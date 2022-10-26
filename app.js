@@ -1,5 +1,6 @@
 const path= require('path')
 const cookieParser = require('cookie-parser')
+const compression= require('compression')
 const express= require('express')
 const morgan= require('morgan')
 const passport= require('passport')
@@ -49,8 +50,7 @@ app.use(express.json({}));
 app.use(express.json({ limit: '10kb' }));
 // app.use(express.urlencoded({ extended: true, limit: '10kb' }));// Body parser, reading data from body into req.body
 
-
-
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next)=>{

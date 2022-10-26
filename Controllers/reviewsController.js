@@ -15,7 +15,6 @@ exports.setAPartmentUserIds = (req, res, next) => {
 
 exports.Checked=catchAsync(async (req,res, next)=>{
     const user= await User.findById(req.body.user)
-    console.log(user)
     if (!user.checked){
         return (next(new AppError('you are not checked you cannot make reviews', 400)))
     }

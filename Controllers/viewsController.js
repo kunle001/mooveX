@@ -98,7 +98,6 @@ exports.signUp= catchAsync(async(req, res, next)=>{
 })
 
 exports.allApartments= catchAsync(async(req, res, next)=>{
-    // console.log(data.latitude)
     
     // const distance= 100
     // const lat= res.locals.location.latitude
@@ -108,8 +107,6 @@ exports.allApartments= catchAsync(async(req, res, next)=>{
     // }},
 
         // const radius = unit === distance/6378.1;
-
-        // console.log(radius)
 
         const apartments= await Apartment.find().sort({createdAt:1});
 
@@ -168,13 +165,10 @@ exports.sigupFacebook= catchAsync(async(req, res, next)=>{
                 photo: profile.photos[0].value
             }
             const user= await User.create(data)
-            console.log(user)
-
             if(err){
              console.log(err) 
              throw err;
             }    
-            console.log(user)
             return done(null,  user)
 
     }));

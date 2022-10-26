@@ -35,6 +35,4 @@ document.getElementById('sign-up').addEventListener('click', e=>{
 
     signup(firstName, lastName, email, password, confirmPassword)
 
-    console.log('got here')
-
 })

@@ -36,8 +36,7 @@ document.querySelector('.update-user-form').addEventListener('submit', e=>{
     form.append('email', email)
     form.append('bio', bio)
     form.append('imageCover', imageCover )
-    
-    console.log(form)
+
     updateMe('data', form)
 
     });

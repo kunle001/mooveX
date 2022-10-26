@@ -10,7 +10,6 @@ const logout = async () => {
       }, 100)
       } 
     } catch (err) {
-      console.log(err.response);
       alert(err, 'Error logging out! Try again.');
     }
   };

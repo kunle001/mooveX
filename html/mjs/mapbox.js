@@ -10,7 +10,6 @@
 
 const mapBox=document.getElementById('map')
 const loc= JSON.parse(mapBox.dataset.loc)
-console.log(loc.coordinates)
 mapboxgl.accessToken = 'pk.eyJ1IjoiYmFkZWp1d29uIiwiYSI6ImNsN3d5eXlkajBodDUzdnViYTlncXpvMWwifQ.4OVdhIpqJlopkgNkl45Arg';
 const map = new mapboxgl.Map({
         container: 'map',

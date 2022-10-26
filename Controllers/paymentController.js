@@ -30,7 +30,6 @@ exports.getCheckoutSession= catchAsync(async (req, res, next)=>{
         cancel_url: `${req.protocol}://${req.get('host')}/${apartment.slug}`,
         customer_email: res.locals.user.email
     });
-    console.log(req.params.apartmentID)
 
     //Send to client 
     res.status(200).json({

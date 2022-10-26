@@ -13,10 +13,10 @@ const login= async(email, password)=>{
             location.assign('/')
         }, 500)
 
-        console.log(res)
-
     }catch(err){
-        console.log(err.response.data)
+        alert({
+            error: err.response.data
+        })
     }
 };
 const signupFb= async()=>{
@@ -25,7 +25,6 @@ const signupFb= async()=>{
             method: 'GET',
             url: 'http://127.0.0.1:3000/api/v1/users/signup-facebook'
         })
-        console.log(res)
 
     }catch(err){
         console.log(err)

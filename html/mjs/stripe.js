@@ -6,8 +6,6 @@ const bookTour= async apartmentID=>{
     const session = await axios({
         url: `http://127.0.0.1:3000/api/v1/payments/checkout-session/${apartmentID}`
     });
-    console.log(session)
-
     //Create check-out form + charge credit card 
 
     await stripe.redirectToCheckout({
