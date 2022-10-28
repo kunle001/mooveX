@@ -1,5 +1,3 @@
-import {axios} from '../../node_modules/axios';
-
 const login= async(email, password)=>{
     try{
         const res= await axios({
@@ -37,7 +35,7 @@ const signupFb= async()=>{
 }
 
 
-document.querySelector('.login-form').addEventListener('submit', e=>{
+document.getElementById('login').addEventListener('click', e=>{
     e.preventDefault();
     const email= document.getElementById('email').value
     const password= document.getElementById('password').value

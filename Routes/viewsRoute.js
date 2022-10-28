@@ -31,6 +31,7 @@ router.get('/create-apartment',viewsController.createApartment)
 router.get('/updateme', viewsController.updateUser)
 router.get('/forgot-password', viewsController.forgotPassword)
 router.get('/:slug', viewsController.apartmentPage);
-router.get('/user/:userId', viewsController.Profile)
+router.get('/user/:userId', viewsController.Profile);
+router.get('/about/:distance/center/:latlng/unit/:unit',viewsController.getApartmentAround)
 
 module.exports= router;

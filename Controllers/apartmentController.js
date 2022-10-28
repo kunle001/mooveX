@@ -8,6 +8,7 @@ const fetch = require('node-fetch')
 const {google}= require('googleapis')
 //getting address by ip
 const sharp = require('sharp');
+const User = require('../Models/userModel');
 
 const multerStorage = multer.memoryStorage({
         destination: (req, file, cb) =>{
@@ -238,14 +239,22 @@ exports.getApartmentAround= catchAsync(async(req, res, next)=>{
 
         const radius = unit === 'mi' ? distance/3963.2 : distance/6378.1;
 
-
         if(!lat || !lng ) res.status(400).json({
             message: ' please provide latitude and logitude'
-        })
+        });
+
+        await User.findByIdAndUpdate(req.user._id, 
+          {currentLocation:[lat*1,lng*1]},
+          {
+            new:true,
+            runValidators:true
+          });
 
         const apartments= await Apartment.find({location:{
             $geoWithin:{$centerSphere: [[lng, lat], radius]}
         }});
+
+
         res.status(200).json({
             status: 'success',
             data:{
@@ -256,11 +265,9 @@ exports.getApartmentAround= catchAsync(async(req, res, next)=>{
 });
 
 exports.getDistances = catchAsync(async (req, res, next) => {
-
+        
         const {latlng, unit}=req.params;
         const [lat, lng]= latlng.split(',');
-
-        const multiplier= unit==='mi' ? 0.00621 : 0.001
 
         if(!lat || !lng){
             res.status(400).json({
@@ -268,30 +275,24 @@ exports.getDistances = catchAsync(async (req, res, next) => {
             });
         }
 
-        const distances= await Apartment.aggregate([
-            {
-            $geoNear:{
-                near:{
-                    type: 'Point',
-                    coordinates: [lng*1, lat*1]
-                },
-                distanceField: 'distance',
-                distanceMultiplier: multiplier
-            }
-        },
-        {
-            $project:{
-                distance: 1,
-                name: 1
-            }
-        }
-    ])
+      //   const distances= await Apartment.aggregate([
+      //     {
+      //        $geoNear: {
+      //           near: { type: "Point", coordinates: [ lat, lng] },
+      //           distanceField: "distances",
+      //           spherical: true
+      //        }
+      //     }
+      //  ]);
+
+      
+
+    console.log(distances)
+    console.log('got here')
 
     res.status(200).json({
         status: 'success',
-        data:{
-            data: distances
-        }
+        data: "distances"
     })
 
   });

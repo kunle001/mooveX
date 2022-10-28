@@ -1,7 +1,6 @@
 extends main
 include apartmentCard
-include agentCard
-include tCheapCard
+
 
 mixin displayApartment(apartment)
 
@@ -39,138 +38,17 @@ block content
           +displayApartment(apartment)
 
       
-      
-  #fh5co-features
-    .container
-      .row
-        .col-md-4.animate-box
-          .feature-left
-            span.icon
-              i.icon-map
-            .feature-copy
-              h3 Move House
-              p Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit.
-              p
-                a(href='#') Learn More
-        .col-md-4.animate-box
-          .feature-left
-            span.icon
-              i.icon-browser
-            .feature-copy
-              h3 Mortgage
-              p Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit.
-              p
-                a(href='#') Learn More
-        .col-md-4.animate-box
-          .feature-left
-            span.icon
-              i.icon-wallet
-            .feature-copy
-              h3 Make Money
-              p Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit.
-              p
-                a(href='#') Learn More
-      .row
-        .col-md-4.animate-box
-          .feature-left
-            span.icon
-              i.icon-piechart
-            .feature-copy
-              h3 Business Home
-              p Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit.
-              p
-                a(href='#') Learn More
-        .col-md-4.animate-box
-          .feature-left
-            span.icon
-              i.icon-genius
-            .feature-copy
-              h3 Marketing
-              p Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit.
-              p
-                a(href='#') Learn More
-        .col-md-4.animate-box
-          .feature-left
-            span.icon
-              i.icon-chat
-            .feature-copy
-              h3 Explorer
-              p Facilis ipsum reprehenderit nemo molestias. Aut cum mollitia reprehenderit.
-              p
-                a(href='#') Learn More
+  
   #fh5co-popular-properties.fh5co-section-gray
     .container
       .row
         .col-md-8.col-md-offset-2.text-center.heading-section.animate-box
-          h3 Popular Apartments
-          p apartments with the best reviews
+          h3 Apartments closest to you
+          p apartments with the best reviews and Most Affordable
           
       .row
         .col-md-4.animate-box
-          each apartment in apartments.slice(0,3)
+          each apartment in apartments
             +apartmentCard(apartment)
           span 
-            a(href='/apartments') check other apartments...
-  #fh5co-testimonial(style='background-image:url(images/img_bg_2.jpg);')
-    .container
-      .row.animate-box
-        .col-md-8.col-md-offset-2.text-center.fh5co-heading
-          h2 From the CEO
-      .row
-        .col-md-4
-          .box-testimony.animate-box
-            blockquote
-              span.quote
-                span
-                  i.icon-quotes-right
-              p “providing you with the most comfortable apartments at affordable price is our goal”
-            p.author
-              | Olanipekun Adekunle, CEO
-              |  
-              span.subtext Creative Director
-
-  #fh5co-about.fh5co-agent
-    .container
-      .row
-        .col-md-8.col-md-offset-2.text-center.heading-section.animate-box
-          a(href='/agents')
-              h3 Our Agents
-              p our agents are well available for you, all day anytime, just reach out
-      .row
-        .col-sm-3.text-center.animate-box(data-animate-effect='fadeIn')        
-          each agent in agents
-            +agentCard(agent)
-  
-  #fh5co-blog-section.fh5co-section-gray
-    .container
-      .row
-        .col-md-8.col-md-offset-2.text-center.heading-section.animate-box
-          h3 Recent From Blog
-          p Hot 3 apartments at cheapest price
-    .container
-      .row.row-bottom-padded-md
-        each apartment in topCheap.slice(0,3)
-          +tCheapCard(apartment)
-  #fh5co-contact.fh5co-contact
-    .half-contact
-      .container-fluid
-        .row
-          .col-md-12.col-md-offset-0.text-center.heading-section.animate-box
-            h3 Ask an agent, We're here to help 24/7
-            p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit est facilis maiores, perspiciatis accusamus asperiores sint consequuntur debitis.
-        .row
-          .col-md-12.animate-box
-            .row
-              .col-md-12
-                .form-group
-                  input.form-control(type='text', placeholder='Name')
-              .col-md-12
-                .form-group
-                  input.form-control(type='text', placeholder='Email')
-              .col-md-12
-                .form-group
-                  textarea.form-control(name, cols='30', rows='7', placeholder='Message')
-              .col-md-12
-                .form-group
-                  input.btn.btn-primary(type='submit', value='Send Message')
-    .half-bg(style='background-image: url(images/ask.jpg);')
+            a(href='/apartments') check all our apartments...
