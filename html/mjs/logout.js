@@ -1,3 +1,5 @@
+const axios= require('axios')
+
 const logout = async () => {
     try {
       const res = await axios({

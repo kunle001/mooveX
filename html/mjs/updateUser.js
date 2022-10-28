@@ -1,8 +1,8 @@
 const updateMe= async(type, data)=>{
     try{
         await axios({
-            url:  type==='password'? 'http://127.0.0.1:3000/api/v1/users/update-password'
-                : 'http://127.0.0.1:3000/api/v1/users/me',
+            url:  type==='password'? '/api/v1/users/update-password'
+                : '/api/v1/users/my-profile',
             method: 'PATCH',
             data
         });

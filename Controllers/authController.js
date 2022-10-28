@@ -55,7 +55,7 @@ exports.login=catchAsync(async (req, res, next)=>{
 exports.signUp = catchAsync(async (req, res, next)=>{
         
         const user= await User.create(req.body);
-        const url= '127.0.0.1:3000'
+        const url= `${req.protocol}://${req.get('host')}/my-profile`
         await new Email(user, url).sendWelcome()
         createSendToken(user, 201, req, res)
         
@@ -91,7 +91,7 @@ exports.forgotPassword= catchAsync(async (req, res, next)=>{
     await user.save({ validateBeforeSave: false});
 
     //--- Send Password reset link to the user's email
-        const resetUrl= `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+        const resetUrl= `${req.protocol}://('host')}/api/v1/users/resetPassword/${resetToken}`;
         await new Email(user, resetUrl).sendPasswordReset()
 
         res.status(200).json({
@@ -102,7 +102,6 @@ exports.forgotPassword= catchAsync(async (req, res, next)=>{
 });
 
 exports.protect= catchAsync(async (req, res, next)=>{
-    // console.log(req.cookie)
     if(req.cookies){
             // verify if token is real
             const decoded= await promisify(jwt.verify)(
@@ -192,7 +191,7 @@ exports.resetPassword= catchAsync(async (req, res, next)=>{
     user.passwordChangedAt= Date.now()
     await user.save();
 
-    new Email(user,'127.0.0.1:3000').sendPasswordChanged()
+    new Email(user,`${req.protocol}/${req.get('host')}`).sendPasswordChanged()
 
     createSendToken(user, 200, req, res)
 

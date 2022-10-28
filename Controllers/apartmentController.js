@@ -4,9 +4,8 @@ const catchAsync= require('../utils/catchAsync')
 const AppError = require('../utils/appError');
 const multer = require('multer')
 const vupload= require('express-fileupload')
-
+const fetch = require('node-fetch')
 //getting address by ip
-const satelize= require('satelize');
 const sharp = require('sharp');
 
 const multerStorage = multer.memoryStorage({
@@ -19,7 +18,7 @@ const multerStorage = multer.memoryStorage({
     }, 
     filename: (req, file, cb)=>{
         if (file.mimetype.startsWith('video')) {
-            const ext= file.mimetype.split('/')[1];
+            const ext= file.mimetype.split('/')[1];``
             return cb(null, `user-${req.params.id}-${Date.now()}.${ext}`)
         }
 
@@ -297,5 +296,33 @@ exports.getDistances = catchAsync(async (req, res, next) => {
   });
 
 
+const {google}= require('googleapis')
+const scopes= 'https://www.googleapis.com/auth/analytics.readonly'
+const jwt= new google.auth.JWT(process.env.CLIENT_EMAIL, null, process.env.PRIVATE_KEY,scopes)
 
 
+exports.googleAnalytics= async(req, res, next)=>{
+  try{
+    const result= await google.analytics('v3').data.ga.get({
+      'auth': jwt,
+      'ids': 'ga:338601947',
+      'start-date': '30daysAgo',
+      'end-date':'today',
+      'metrics': 'ga:pageviews'
+    })
+
+    res.status(200).json({
+      status: 'success',
+      data: result
+
+    })
+  }catch(err){
+    console.log(err)
+    res.status(500).json({
+      status: "fail",
+      data: err
+    })
+
+  }
+}
+  

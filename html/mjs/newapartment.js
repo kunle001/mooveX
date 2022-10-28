@@ -3,7 +3,7 @@ const createApartment= async(apartmentType,type,bathrooms,garage,pools,rooms,gen
     try{
         const res= await axios({
             method: 'POST',
-            url: 'http://127.0.0.1:3000/api/v1/apartments',
+            url: '/api/v1/apartments',
             data:{
                 apartmentType,
                 type,bathrooms,

@@ -19,6 +19,7 @@ router.route('/')
     .post(apartmentController.createApartment)
 router.route('/top-5-cheap').get(apartmentController.getTop5Cheap);
 
+router.route('/google-analytics').get(apartmentController.googleAnalytics)
 
 
 router.route('/:id')
@@ -31,7 +32,6 @@ router.route('/:id')
 router.route('/around/:distance/center/:latlng/unit/:unit').get(apartmentController.getApartmentAround)
 
 router.route('/distances/:latlng/unit/:unit').get(apartmentController.getDistances)
-
 
 
 

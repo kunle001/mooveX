@@ -4,7 +4,7 @@ const bookTour= async apartmentID=>{
     try{
     // Get checkout-session from API
     const session = await axios({
-        url: `http://127.0.0.1:3000/api/v1/payments/checkout-session/${apartmentID}`
+        url: `/api/v1/payments/checkout-session/${apartmentID}`
     });
     //Create check-out form + charge credit card 
 
