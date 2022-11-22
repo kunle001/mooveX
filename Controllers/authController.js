@@ -76,30 +76,52 @@ exports.logout = (req, res) => {
     res.status(200).json({ status: 'success' });
   };
 
-exports.forgotPassword= catchAsync(async (req, res, next)=>{
-    //-- get user based on posted email
-    const user = await User.findOne({email: req.body.email})
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+    // 1) Get user based on POSTed email
+    const user = await User.findOne({ email: req.body.email });
+    
+    if (!user) {
+      return next(new AppError('There is no user with email address.', 404));
+    }  
 
-    if(!user){
-        res.status(404).json({
-            message: "There is no user with this email"
-        })
+    // 3) Send it to user's email
+    if (user){
+        
+        try {
+            // 2) Generate the random reset token
+            const resetToken = user.createPasswordResetToken();
+            await user.save({ validateBeforeSave: false });
+
+            /////
+            const resetURL = `${req.protocol}://${req.get(
+              'host'
+            )}/api/v1/users/resetPassword/${resetToken}`;
+            await new Email(user, resetURL).sendPasswordReset();
+        
+            res.status(200).json({
+              status: 'success',
+              message: 'Token sent to email!'
+            });
+          } catch (err) {
+            user.passwordResetToken = undefined;
+            user.passwordResetExpires = undefined;
+            await user.save({ validateBeforeSave: false });
+            console.log(err)
+        
+            return next(
+              new AppError('There was an error sending the email. Try again later!'),
+              400
+            );
+          }
+
     }
-    //-- generating random token
-
-    const resetToken= user.createPasswordResetToken();
-    await user.save({ validateBeforeSave: false});
-
-    //--- Send Password reset link to the user's email
-        const resetUrl= `${req.protocol}://('host')}/api/v1/users/resetPassword/${resetToken}`;
-        await new Email(user, resetUrl).sendPasswordReset()
-
-        res.status(200).json({
-            status: 'success',
-            message: 'Token has been sent to email'
-        })
+            return next(
+              new AppError('There was an error sending the email. Try again later!'),
+              400
+            );
 
 });
+
 
 exports.protect= catchAsync(async (req, res, next)=>{
     if(req.cookies){
