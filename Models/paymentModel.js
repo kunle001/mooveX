@@ -17,13 +17,15 @@ const paymentSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now()
+    default: new Date
   },
   paid: {
     type: Boolean,
     default: true
   }
 });
+
+paymentSchema.index({createdAt: -1})
 
 paymentSchema.pre(/^find/, function(next) {
   this.populate('user').populate({

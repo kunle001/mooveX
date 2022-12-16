@@ -143,7 +143,11 @@ exports.forgotPassword= async(req, res, next)=>{
 };
 
 exports.adminPanel= async(req, res, next)=>{
-    res.status(200).render('adminPanel')
+    const users = await User.find()
+    console.log(users.length)
+    res.status(200).render('admin/adminPanel', {
+        users
+    })
 }
 
 
@@ -188,9 +192,10 @@ exports.sigupFacebook= catchAsync(async(req, res, next)=>{
 });
 
 
-
-
-
+exports.adminPanelUsersInfo= catchAsync(async(req, res, next)=>{
+    const users = await User.find()
+    res.status(200).render('admin/users')
+})
 
 
 

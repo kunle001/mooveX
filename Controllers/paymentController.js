@@ -50,3 +50,28 @@ exports.createPaymentCheckout= catchAsync(async (req, res, next)=>{
     res.redirect(req.originalUrl.split('?')[0])
 
 });
+
+exports.dayPayments= catchAsync(async(req, res, next)=>{
+
+    var myDate = new Date() // your date object
+
+
+    const payments=  Payment.aggregate([
+        {
+            $match: {createdAt: {$gte:myDate.setHours(myDate.getHours() + 24)}}
+        },
+        {
+            $group:{
+                _id: "$user",
+                sum: { $sum: $price}
+             }
+        }
+    ]);
+
+    console.log(payments);
+
+    res.status(200).json({
+        status: 'success',
+        data: payments
+    })
+})

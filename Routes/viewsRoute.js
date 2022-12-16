@@ -21,6 +21,7 @@ router.use(authController.checkIfLoggedIn)
 
 router.get('/',paymentController.createPaymentCheckout,viewsController.homePage);
 router.get('/admin-panel', viewsController.adminPanel)
+router.get('/admin-panel/users', viewsController.adminPanelUsersInfo)
 router.get('/login', viewsController.login)
 router.get('/agents', viewsController.agentPage)
 router.get('/my-profile', viewsController.userProfile);
