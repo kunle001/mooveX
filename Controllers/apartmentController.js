@@ -5,6 +5,7 @@ const AppError = require('../utils/appError');
 const multer = require('multer')
 const vupload= require('express-fileupload')
 const fetch = require('node-fetch')
+const {google}= require('googleapis')
 //getting address by ip
 const sharp = require('sharp');
 
@@ -12,7 +13,7 @@ const multerStorage = multer.memoryStorage({
         destination: (req, file, cb) =>{
         if (file.mimetype.startsWith('video')){ 
             (file)
-            return cb(null, 'html/images/apartments/videos')
+            return cb(null, 'public/images/apartments/videos')
             
         }
     }, 
@@ -66,7 +67,7 @@ exports.resizeApartmentImages = catchAsync(async (req, res, next) => {
     .resize(2000, 1333)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`html/images/apartments/${req.body.imageCover}`);
+    .toFile(`public/images/apartments/${req.body.imageCover}`);
 
   // 2) Images
   req.body.images = [];
@@ -79,7 +80,7 @@ exports.resizeApartmentImages = catchAsync(async (req, res, next) => {
         .resize(2000, 1333)
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
-        .toFile(`html/images/apartments/${filename}`);
+        .toFile(`public/images/apartments/${filename}`);
 
       req.body.images.push(filename);
     })
@@ -90,7 +91,7 @@ exports.resizeApartmentImages = catchAsync(async (req, res, next) => {
     .resize(2000, 1333)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`html/images/plan/${req.body.plan}`);
+    .toFile(`public/images/plan/${req.body.plan}`);
 
   next();
 });
@@ -99,7 +100,7 @@ exports.uploadVideo= catchAsync(async(req, res, next)=>{
     if (req.files.video){
         const videoStorage = multer.diskStorage({
                 destination: (req, file, cb) =>{
-        cb(null, 'html/images/apartments/videos');
+        cb(null, 'public/images/apartments/videos');
             
     }, 
             filename: (req, file, cb)=>{
@@ -296,7 +297,7 @@ exports.getDistances = catchAsync(async (req, res, next) => {
   });
 
 
-const {google}= require('googleapis')
+
 const scopes= 'https://www.googleapis.com/auth/analytics.readonly'
 CLIENT_EMAIL= "google-analytics@smiling-diode-366310.iam.gserviceaccount.com"
 

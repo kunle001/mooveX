@@ -49,7 +49,7 @@ exports.resizeUserPhoto=(req, res, next)=>{
         .resize(500,500)
         .toFormat('jpeg')
         .jpeg({quality: 90})
-        .toFile(`html/images/users/${req.file.filename}`);
+        .toFile(`public/images/users/${req.file.filename}`);
     next();
 };
 
