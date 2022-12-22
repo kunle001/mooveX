@@ -195,7 +195,29 @@ exports.sigupFacebook= catchAsync(async(req, res, next)=>{
 exports.adminPanelUsersInfo= catchAsync(async(req, res, next)=>{
     const users = await User.find()
     res.status(200).render('admin/users')
-})
+});
+
+exports.getApartmentAround= catchAsync(async(req, res, next)=>{
+    const {distance, latlng, unit}= req.params
+    const [lat, lng]= latlng.split(',')
+
+    const radius = unit === 'mi' ? distance/3963.2 : distance/6378.1;
+
+
+    if(!lat || !lng ) res.status(400).json({
+        message: ' please provide latitude and logitude'
+    })
+
+    const apartments= await Apartment.find({location:{
+        $geoWithin:{$centerSphere: [[lng, lat], radius]}
+    }});
+    res.status(200).render('near',{
+        apartments,
+        title: 'closest apartments'
+    })
+
+});
+
 
 
 
