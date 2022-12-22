@@ -5,6 +5,7 @@ const User= require('../Models/userModel')
 const Email= require('../utils/email')
 const catchAsync= require('../utils/catchAsync')
 const AppError = require('../utils/appError')
+const keys= require('../smiling-diode-366310-09ebbacc64c7')
 
 
 
@@ -256,5 +257,9 @@ exports.RestrictTo = (...roles) => {
     };
   };
   
+
+  exports.googleAnalytics= catchAsync(async(req, res, next)=>{
+    
+  })
 
 
