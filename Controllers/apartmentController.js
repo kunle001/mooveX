@@ -242,7 +242,7 @@ exports.getApartmentAround= catchAsync(async(req, res, next)=>{
         if(!lat || !lng ) res.status(400).json({
             message: ' please provide latitude and logitude'
         })
-        });
+      
 
         await User.findByIdAndUpdate(req.user._id, 
           {currentLocation:[lat*1,lng*1]},
@@ -257,13 +257,12 @@ exports.getApartmentAround= catchAsync(async(req, res, next)=>{
 
 
         res.status(200).json({
-            status: 'success',
-            data:{
-                data: apartments
-            }
-        })
-
-});
+          status: 'success',
+          data:{
+              data: apartments
+          }
+      })
+    });
 
 exports.getDistances = catchAsync(async (req, res, next) => {
         
