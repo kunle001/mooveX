@@ -39,7 +39,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'))
 
 //Serving static files
-app.use(express.static(path.join(__dirname, 'html')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use(express.json({}));
