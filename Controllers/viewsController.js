@@ -99,14 +99,6 @@ exports.signUp= catchAsync(async(req, res, next)=>{
 
 exports.allApartments= catchAsync(async(req, res, next)=>{
     
-    // const distance= 100
-    // const lat= res.locals.location.latitude
-    // const lng= res.locals.location.longitude
-    // {location:{
-    //     $geoWithin:{$centerSphere: [[lng, lat], radius]}
-    // }},
-
-        // const radius = unit === distance/6378.1;
 
         const apartments= await Apartment.find().sort({createdAt:1});
 
@@ -198,19 +190,26 @@ exports.adminPanelUsersInfo= catchAsync(async(req, res, next)=>{
 });
 
 exports.getApartmentAround= catchAsync(async(req, res, next)=>{
-    const {distance, latlng, unit}= req.params
-    const [lat, lng]= latlng.split(',')
+       const {distance, latlng, unit}= req.params
+        const [lat, lng]= latlng.split(',')
 
-    const radius = unit === 'mi' ? distance/3963.2 : distance/6378.1;
+        const radius = unit === 'mi' ? distance/3963.2 : distance/6378.1;
 
+        if(!lat || !lng ) res.status(400).json({
+            message: ' please provide latitude and logitude'
+        });
 
-    if(!lat || !lng ) res.status(400).json({
-        message: ' please provide latitude and logitude'
-    })
+        // await User.findByIdAndUpdate(req.user._id, 
+        //   {currentLocation:[lat*1,lng*1]},
+        //   {
+        //     new:true,
+        //     runValidators:true
+        //   });
+        
+        const apartments= await Apartment.find({location:{
+            $geoWithin:{$centerSphere: [[lng, lat], radius]}
+        }});
 
-    const apartments= await Apartment.find({location:{
-        $geoWithin:{$centerSphere: [[lng, lat], radius]}
-    }});
     res.status(200).render('near',{
         apartments,
         title: 'closest apartments'
