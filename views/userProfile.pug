@@ -11,7 +11,8 @@ block content
           .form__group.form__photo-upload
             img.form__profile-photo(src=`/images/users/${user.imageCover}`, alt='User photo')
             input.form__upload(type='file', accept='image/*', id='imageCover', name='photo', style="margin-down: 10px ")
-            label(for='imageCover') Change Picture
+            a(href='/updateme') edit profile
+            
         .col-md-6
           .profile-head
             h3

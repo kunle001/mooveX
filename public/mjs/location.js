@@ -15,7 +15,9 @@ const findState = () => {
           const long = data.longitude;
           const unit = 'mi';
           const distance = 30;
-          location.assign(`about/${distance}/${lat},${long}/unit/${unit}`);
+          window.setTimeout(()=>{
+            location.assign(`about/${distance}/center/${lat},${long}/unit/${unit}`)
+            }, 50)
           return { latitude: lat, longitude: long };
         });
     };

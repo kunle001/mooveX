@@ -190,6 +190,24 @@ exports.adminPanelUsersInfo= catchAsync(async(req, res, next)=>{
 });
 
 exports.getApartmentAround= catchAsync(async(req, res, next)=>{
+
+    let filter={role: 'agent'};
+
+    const features = new APIFeatures(User.find(filter), req.query)
+        .filter()
+        .sort()
+        .limitFields()
+        .paginate()
+
+    const agents= await features.query
+
+    req.query.limit= '5'
+    req.query.sort= '-ratingsAverage, price -ratingsQuantity';
+    req.query.fields= 'name'
+
+    const top3cheap= await Apartment.find().populate('reviews')
+
+    
        const {distance, latlng, unit}= req.params
         const [lat, lng]= latlng.split(',')
 
@@ -209,10 +227,12 @@ exports.getApartmentAround= catchAsync(async(req, res, next)=>{
         const apartments= await Apartment.find({location:{
             $geoWithin:{$centerSphere: [[lng, lat], radius]}
         }});
-
+        console.log('got here')
     res.status(200).render('near',{
         apartments,
-        title: 'closest apartments'
+        title: 'Closest',
+        agents,
+        topCheap: top3cheap
     })
 
 });
