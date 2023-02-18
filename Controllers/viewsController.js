@@ -68,8 +68,8 @@ exports.agentPage= catchAsync(async (req, res, next)=>{
         .filter()
         .sort()
         .limitFields()
-        .paginate()
-
+        .paginate();
+        
     const agents= await features.query
     
     res.status(200).render('agents',{
@@ -216,19 +216,13 @@ exports.getApartmentAround= catchAsync(async(req, res, next)=>{
         if(!lat || !lng ) res.status(400).json({
             message: ' please provide latitude and logitude'
         });
-
-        // await User.findByIdAndUpdate(req.user._id, 
-        //   {currentLocation:[lat*1,lng*1]},
-        //   {
-        //     new:true,
-        //     runValidators:true
-        //   });
         
         const apartments= await Apartment.find({location:{
             $geoWithin:{$centerSphere: [[lng, lat], radius]}
         }});
-        console.log('got here')
-    res.status(200).render('near',{
+
+        console.log(apartments)
+        res.status(200).render('near',{
         apartments,
         title: 'Closest',
         agents,

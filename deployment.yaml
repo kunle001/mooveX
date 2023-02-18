@@ -1,0 +1,37 @@
+---
+kind: service 
+apiversion: v1
+metadata:
+  name: helloworldservice
+spec:
+  selector:
+    app: hello-world
+  ports: 
+    protocol: "TCP"
+    #Port accesible inside cluster 
+    port: 8080
+    #port to forward to inside pod 
+    targetPort: 80
+    #port accesible outside cluster 
+    nodePort: 30001
+  type: LoadBalancer
+
+
+
+---
+apiversion: extension/v1beta1;
+kind: Deployment 
+metadata:
+  name: mooveX
+spec: 
+  replica: 5
+  template:
+    metadata: 
+      labels: 
+        app: 
+    spec:
+      containers:
+        name: mooveX
+        image: tutum/helloworld
+        ports:
+          -containerPort: 80

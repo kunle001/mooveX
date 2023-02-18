@@ -1,35 +1,29 @@
-const findState = () => {
-    const status = document.querySelector('.fh5co-wrapper');
-  
-    const success = (position) => {
-      console.log(position);
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-  
-      const geoApiUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
-      fetch(geoApiUrl)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data.latitude, data.longitude);
-          const lat = data.latitude;
-          const long = data.longitude;
-          const unit = 'mi';
-          const distance = 30;
-          window.setTimeout(()=>{
-            location.assign(`about/${distance}/center/${lat},${long}/unit/${unit}`)
-            }, 50)
-          return { latitude: lat, longitude: long };
-        });
-    };
-  
-    const error = () => {
-      alert('Unable to retrieve your location');
-    };
-  
-    navigator.geolocation.getCurrentPosition(success, error);
+const findState =  () => {
+  const success = async(position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    const geoApiUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
+    const response = await fetch(geoApiUrl);
+    const data = await response.json();
+
+    const lat = data.latitude;
+    const long = data.longitude;
+    const unit = 'mi';
+    const distance = 30;
+    setTimeout(() => {
+      location.assign(`about/${distance}/center/${lat},${long}/unit/${unit}`);
+    }, 1000);
   };
-  
-  window.addEventListener('load', () => {
-    findState();
-  });
-  
+
+  const error = (error) => {
+    console.error(error);
+    alert('Unable to retrieve your location');
+  };
+
+  navigator.geolocation.getCurrentPosition(success, error);
+};
+
+window.addEventListener('load', () => {
+  findState();
+});

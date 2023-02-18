@@ -11,7 +11,7 @@ const login= async(email, password)=>{
         });
         window.setTimeout(()=>{
             location.assign('/')
-        }, 500)
+        }, 500);
 
     }catch(err){
         console.log(err)

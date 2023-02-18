@@ -3,25 +3,21 @@ const APIFeatures = require('../utils/apiFeatures')
 const catchAsync= require('../utils/catchAsync')
 const AppError = require('../utils/appError');
 const multer = require('multer')
-const vupload= require('express-fileupload')
-const fetch = require('node-fetch')
 const {google}= require('googleapis')
 //getting address by ip
 const sharp = require('sharp');
 const User = require('../Models/userModel');
 
-const multerStorage = multer.memoryStorage({
+const multerStorage = multer.diskStorage({
         destination: (req, file, cb) =>{
         if (file.mimetype.startsWith('video')){ 
-            (file)
-            return cb(null, 'public/images/apartments/videos')
-            
+              cb(null, 'public/images/apartments/videos');
         }
     }, 
     filename: (req, file, cb)=>{
         if (file.mimetype.startsWith('video')) {
-            const ext= file.mimetype.split('/')[1];``
-            return cb(null, `user-${req.params.id}-${Date.now()}.${ext}`)
+            const ext= file.mimetype.split('/')[1];
+            cb(null, `user-${req.params.id}-${Date.now()}.${ext}`)
         }
 
         
@@ -41,9 +37,6 @@ const multerFilter = (req, file, cb) => {
 
 const upload = multer({
   storage: multerStorage,
-//   limits: {
-//     fileSize: 20000000 //20MB
-//   },
   fileFilter: multerFilter
 });
 
@@ -56,12 +49,10 @@ exports.uploadApartmentImages = upload.fields([
   {name: 'video', maxCount: 1}
 ]);
 
-// upload.single('image') req.file
-// upload.array('images', 5) req.files
 
 exports.resizeApartmentImages = catchAsync(async (req, res, next) => {
-    
-  if (!req.files.imageCover || !req.files.images || !req.files.plan) return next();
+  console.log('got here')
+  if (!req.files.imageCover) return next();
     // 1) Cover image
   req.body.imageCover = `apartment-${req.params.id}-${Date.now()}-cover.jpeg`;
   await sharp(req.files.imageCover[0].buffer)
@@ -97,42 +88,40 @@ exports.resizeApartmentImages = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.uploadVideo= catchAsync(async(req, res, next)=>{
-    if (req.files.video){
-        const videoStorage = multer.diskStorage({
-                destination: (req, file, cb) =>{
-        cb(null, 'public/images/apartments/videos');
-            
-    }, 
-            filename: (req, file, cb)=>{
-                    const ext= file.mimetype.split('/')[1];
-                    cb(null, `apartment-${req.params.id}-video-${Date.now()}.${ext}`)
-                }
-       });
-       const fileFilter= (req, file, cb)=> {
-        // upload only mp4 and mkv format
-        if (!file.originalname.match(/\.(mp4|MPEG-4|mkv)$/)) { 
-           return cb(new AppError('Please upload a video'))
-        }
-           
-        cb(undefined, true)
-     }
-    
-       const videoUpload = multer({
-        storage: videoStorage,
-        limits: {
-        fileSize: 10000000 // 10000000 Bytes = 10 MB
-        },
-        fileFilter: fileFilter
-    })
-    req.body.video= `apartment-${req.params.id}-video-${Date.now()}.mp4`
-    videoUpload.single(req.files.video)
-    }
-    
-
-    next()
-
+const videoStorage = multer.diskStorage({
+  destination:(req, file, cb)=>{
+    cb(null, 'public/images/apartments/videos');
+  },
+  filename:(req, file, cb)=>{
+    const ext= file.mimetype.split('/')[1];
+    cb(null, `apartment-${req.params.id}-video-${Date.now()}.${ext}`);
+  },
 });
+
+const fileFilter= (req, file, cb)=>{
+  if(file.mimetype.startsWith('video')){
+    cb(null, true);
+  }else{
+    cb(new Error('Not a video file. Please upload video files'))
+  }
+
+}
+
+exports.uploadVideo= catchAsync(async(req, res, next)=>{
+  console.log(req.files)
+  if(req.files.video){
+    console.log('...uploading video')
+    const upload= multer({storage:videoStorage,fileFilter}).single('video');
+    upload(req,res, (err)=>{
+      if(err){
+        return next(new AppError('Failed to upload video', 500));
+      }
+      req.body.video= req.file.filename;
+      next();
+    });
+  }
+  next();
+})
 
 
 

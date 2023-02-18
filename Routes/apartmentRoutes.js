@@ -24,7 +24,8 @@ router.route('/google-analytics').get(apartmentController.googleAnalytics)
 
 router.route('/:id')
     .get(apartmentController.getOneApartment)
-    .patch(apartmentController.uploadApartmentImages,
+    .patch(
+        apartmentController.uploadApartmentImages,
         apartmentController.resizeApartmentImages,
         apartmentController.uploadVideo,
         apartmentController.updateApartment)
@@ -36,10 +37,3 @@ router.route('/distances/:latlng/unit/:unit').get(apartmentController.getDistanc
 
 
 module.exports= router;
-
-
-
-
-
-
-
