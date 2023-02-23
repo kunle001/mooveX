@@ -1,7 +1,7 @@
 const express= require('express');
 const apartmentController = require('../Controllers/apartmentController');
 const authController= require('../Controllers/authController')
-const reviewRouter= require('../routes/reviewRoutes')
+const reviewRouter= require('../Routes/reviewRoutes')
 const bookingRouter= require('../Routes/bookingRoute')
 
 const router= express.Router();
