@@ -1,0 +1,16 @@
+apiVersion: apps/v1;
+kind: Deployment 
+metadata:
+  name: mooveX
+spec: 
+  replica: 5
+  template:
+    metadata: 
+      labels: 
+        app: 
+    spec:
+      containers:
+        name: 651d9e09ce9f6206f6e4d135e0be602a552b05798c6231fd93dc3097d34dcd0c
+        image: Kkunle/moovex
+        ports:
+          -containerPort: 3000
