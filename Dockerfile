@@ -15,3 +15,8 @@ COPY . /app
 EXPOSE 3000
 
 CMD ["npm", "start"]
+
+
+
+#docker build -t <nameofContainer> .
+#docker run -it -p 3002:3000 <nameofContainer>
