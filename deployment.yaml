@@ -1,7 +1,7 @@
-apiVersion: apps/v1;
+apiVersion: apps/v1
 kind: Deployment 
 metadata:
-  name: moovex-deployment
+  name: deployment
   labels: 
     app: moovex
 spec: 
@@ -15,8 +15,8 @@ spec:
         app: moovex
     spec:
       containers:
-      - name: kkunle/moovex
+      - name:  moovex
         image: kkunle/moovex:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 80
 
