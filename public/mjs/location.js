@@ -13,7 +13,7 @@ const findState =  () => {
     const distance = 30;
     setTimeout(() => {
       location.assign(`about/${distance}/center/${lat},${long}/unit/${unit}`);
-    }, 1000);
+    }, 500);
   };
 
   const error = (error) => {

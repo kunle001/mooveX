@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress 
+metadata: 
+  name: moovex-ingress
+spec:
+  rules:
+  - host: moovhex.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: moovex-service
+            port:
+              name: http

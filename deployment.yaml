@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment 
 metadata:
-  name: deployment
+  name: moovex-deployment
   labels: 
     app: moovex
 spec: 
-  replicas: 1
+  replicas: 2
   selector: 
     matchLabels:
       app: moovex
@@ -18,5 +18,97 @@ spec:
       - name:  moovex
         image: kkunle/moovex:latest
         ports:
-        - containerPort: 80
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: DATABASE 
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: DATABASE
+        - name: DATA_BASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: DATA_BASE_PASSWORD
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: JWT_SECRET          
+        - name: JWT_EXPIRES_IN
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: JWT_EXPIRES_IN
+        - name: EMAIL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: EMAIL_HOST
+        - name: EMAIL_PORT
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: EMAIL_PORT
+        - name: EMAIL_FROM
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: EMAIL_FROM  
+        - name: EMAIL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: EMAIL_USERNAME            
+        - name: EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: EMAIL_PASSWORD
+        - name: SENDGRID_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: SENDGRID_USERNAME
+        - name: SENDGRID_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: SENDGRID_PASSWORD
+        - name: SENDGRID_APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: SENDGRID_APIKEY
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: STRIPE_SECRET_KEY
+        - name: FACEBOOKCLIENTID
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: FACEBOOKCLIENTID
+        - name: FACEBOOKCLIENTSECRET
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: FACEBOOKCLIENTSECRET
+        - name: GA_TRACKING_ID
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: GA_TRACKING_ID
+        - name: CLIENT_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: moovex-secret
+              key: CLIENT_EMAIL
+
+
+
+
 
