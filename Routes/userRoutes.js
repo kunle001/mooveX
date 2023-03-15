@@ -1,10 +1,10 @@
-const userController= require('../Controllers/userController')
-const authController= require('../Controllers/authController')
+const userController = require('../Controllers/userController')
+const authController = require('../Controllers/authController')
 
 
-const express= require('express')
+const express = require('express')
 
-const router= express.Router()
+const router = express.Router()
 
 
 
@@ -18,15 +18,15 @@ router.route('/')
         .get(authController.protect, authController.RestrictTo('admin'), userController.getAllUsers)
 
 router.route('/me').get(authController.protect, userController.myProfile)
-                   .patch(userController.uploadUserPhoto,userController.resizeUserPhoto,userController.updateMe)
-                   
+        .patch(userController.uploadUserPhoto, userController.resizeUserPhoto, userController.updateMe)
+
 router.route('/update-password')
         .patch(authController.protect, authController.updatePassword)
 
 router.route('/:id')
         .delete(authController.RestrictTo('admin'), userController.deleteAccount)
-        .patch(authController.protect, userController.uploadUserPhoto,userController.resizeUserPhoto,
-        userController.updateUser)
+        .patch(authController.protect, userController.uploadUserPhoto, userController.resizeUserPhoto,
+                userController.updateUser)
         .get(userController.getOneUser)
 
 
@@ -36,7 +36,7 @@ router.route('/deactivateAccount').patch(authController.protect, userController.
 
 
 router.route('/resetPassword/:token').post(authController.resetPassword);
-        
+
 // router.route('/:id')
 
-module.exports= router 
+module.exports = router 

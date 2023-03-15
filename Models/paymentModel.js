@@ -25,9 +25,9 @@ const paymentSchema = new mongoose.Schema({
   }
 });
 
-paymentSchema.index({createdAt: -1})
+paymentSchema.index({ createdAt: -1 })
 
-paymentSchema.pre(/^find/, function(next) {
+paymentSchema.pre(/^find/, function (next) {
   this.populate('user').populate({
     path: 'apartment',
     select: 'name price'

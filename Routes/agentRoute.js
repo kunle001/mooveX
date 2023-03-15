@@ -1,8 +1,8 @@
-const authController= require('../Controllers/authController')
-const express= require('express')
+const authController = require('../Controllers/authController')
+const express = require('express')
 
-const router= express.Router();
+const router = express.Router();
 
 router.route('/signup').post(authController.signUpAgent)
 
-module.exports= router
+module.exports = router

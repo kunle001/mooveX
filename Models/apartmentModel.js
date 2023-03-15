@@ -1,20 +1,20 @@
-const mongoose= require('mongoose')
+const mongoose = require('mongoose')
 const slugify = require('slugify')
 
 
 
-const apartmentSchema= new mongoose.Schema({
+const apartmentSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'apartment must have a name'],
-        unique:true,
+        unique: true,
         trim: true,
         maxlength: [40, 'Name should be less than 40 letters'],
         minlength: [5, 'Apartment should have a name at least 5 length long'],
 
     },
     slug: String,
-    roomspaces:{
+    roomspaces: {
         type: Number
     },
     apartmentType: {
@@ -28,7 +28,7 @@ const apartmentSchema= new mongoose.Schema({
         enum: ['flat', 'self-contain', 'single-room', 'building'],
         default: "single-room"
     },
-    specifications:{
+    specifications: {
         type: {
             type: String,
             default: 'Specs'
@@ -43,14 +43,14 @@ const apartmentSchema= new mongoose.Schema({
     gender: {
         type: String,
         enum: ['Male', 'Female'],
-        validate:{
-            validator: function(){
-                return this.apartmentType=== 'gender specific'
+        validate: {
+            validator: function () {
+                return this.apartmentType === 'gender specific'
             }
         }
     },
-    location:{
-        type:{
+    location: {
+        type: {
             type: String,
             default: "Point",
             enum: ["Point"]
@@ -62,23 +62,23 @@ const apartmentSchema= new mongoose.Schema({
     plan: [String],
     video: String,
     roomOccupants: Number,
-    summary:{
-        type: String, 
-        required: [true, 'Please add ur description'], 
+    summary: {
+        type: String,
+        required: [true, 'Please add ur description'],
         trim: true
-    }, 
+    },
     years: {
-        type: Number, 
+        type: Number,
         required: ['true', 'Please how old is your apartment']
-    }, 
+    },
     secretApartment: {
         type: Boolean,
         default: false
     },
     price: {
         type: Number,
-        required:[true, 'what is the "price" of your apartment']
-    }, 
+        required: [true, 'what is the "price" of your apartment']
+    },
     discountPrice: Number,
     imageCover: {
         type: String,
@@ -89,18 +89,18 @@ const apartmentSchema= new mongoose.Schema({
     ratingsAverage: {
         type: Number,
         default: 0,
-        set: val => Math.round(val*10)/10
+        set: val => Math.round(val * 10) / 10
     },
     ratingsQuantity: {
         type: Number,
         default: 0
     },
-    agents:[{
+    agents: [{
         type: mongoose.Schema.ObjectId,
         ref: 'User',
     }],
 
-    owners:[{
+    owners: [{
         type: mongoose.Schema.ObjectId,
         ref: 'User'
     }],
@@ -109,10 +109,10 @@ const apartmentSchema= new mongoose.Schema({
     }],
     createdAt: Date
 },
-{ toJSON: { virtuals: true }, toObject: { virtuals: true }});
+    { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
-apartmentSchema.index({price:1, ratingsAverage:-1, roomOccupants:1})
-apartmentSchema.index({location: '2dsphere'})
+apartmentSchema.index({ price: 1, ratingsAverage: -1, roomOccupants: 1 })
+apartmentSchema.index({ location: '2dsphere' })
 
 apartmentSchema.virtual('reviews', {
     ref: 'Review',
@@ -120,28 +120,28 @@ apartmentSchema.virtual('reviews', {
     localField: '_id'
 })
 
-apartmentSchema.pre('save', function(next) {
+apartmentSchema.pre('save', function (next) {
 
     this.slug = slugify(this.name, { lower: true });
-    this.createdAt= Date.now()
-    if (this.specifications.bathrooms){
-        if (!this.ammenities.includes('bathrooms')){
+    this.createdAt = Date.now()
+    if (this.specifications.bathrooms) {
+        if (!this.ammenities.includes('bathrooms')) {
             this.ammenties.append('bathrooms')
         }
-    }else if(this.specifications.garage){
-        if (!this.ammenities.includes('garage')){
+    } else if (this.specifications.garage) {
+        if (!this.ammenities.includes('garage')) {
             this.ammenities.append('garage')
         }
-    }else if (this.specifications.garage){
-        if (!this.ammenities.includes('pools')){
+    } else if (this.specifications.garage) {
+        if (!this.ammenities.includes('pools')) {
             this.ammenities.append('pools')
         }
     }
     next();
-  });
+});
 
 
-apartmentSchema.pre(/^findOne/, function(next){
+apartmentSchema.pre(/^findOne/, function (next) {
     this.populate({
         path: 'owners',
         select: 'name email imageCover'

@@ -1,10 +1,10 @@
-const express= require('express');
+const express = require('express');
 const apartmentController = require('../Controllers/apartmentController');
-const authController= require('../Controllers/authController')
-const reviewRouter= require('../Routes/reviewRoutes')
-const bookingRouter= require('../Routes/bookingRoute')
+const authController = require('../Controllers/authController')
+const reviewRouter = require('../Routes/reviewRoutes')
+const bookingRouter = require('../Routes/bookingRoute')
 
-const router= express.Router();
+const router = express.Router();
 
 // router.use('/:tourId')
 
@@ -36,4 +36,4 @@ router.route('/distances/:latlng/unit/:unit').get(apartmentController.getDistanc
 
 
 
-module.exports= router;
+module.exports = router;
