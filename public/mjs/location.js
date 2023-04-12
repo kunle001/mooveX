@@ -1,5 +1,5 @@
-const findState =  () => {
-  const success = async(position) => {
+const findState = () => {
+  const success = async (position) => {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
